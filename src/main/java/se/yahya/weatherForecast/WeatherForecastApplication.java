@@ -1,0 +1,56 @@
+package se.yahya.weatherForecast;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.services.ForecastFunctions;
+import se.yahya.weatherForecast.services.ForecastService;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.UUID;
+
+
+@SpringBootApplication
+public class WeatherForecastApplication implements CommandLineRunner {
+
+	public static void main(String[] args) {
+		SpringApplication.run(WeatherForecastApplication.class, args);
+	}
+
+
+	@Autowired
+	ForecastFunctions forecastFunctions;
+
+
+	@Override
+	public void run(String... args) throws Exception {
+	forecastFunctions.menu();
+	}
+
+
+
+
+
+
+}
+
+
+
+	/*boolean validInput = false;
+		while (!validInput) {
+			System.out.println("temp");
+			if (scan.hasNextFloat()) {
+				temp = scan.nextFloat();
+				validInput = true;
+			} else {
+				System.out.println("Invalid temperature input. Please enter a valid floating-point number.");
+				scan.next(); // Consume the invalid input to prevent an infinite loop
+			}
+		}
+*/
