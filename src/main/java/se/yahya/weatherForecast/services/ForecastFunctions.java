@@ -1,12 +1,20 @@
 package se.yahya.weatherForecast.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.models.Forecast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -16,10 +24,21 @@ public class ForecastFunctions {
     @Autowired
     ForecastService forecastService;
 
+    /*
+    @Autowired
+    MongoDBConnection mongoDBConnection;
+     */
+
+
+
+
 
 
     public void menu () throws IOException {
-        var scan = new Scanner(System.in);
+
+
+
+    var scan = new Scanner(System.in);
 
         while (true) {
             showHeaderMenu();
@@ -37,14 +56,12 @@ public class ForecastFunctions {
             }else if (choices == 3) {
                 deletePrediction(scan);
             }
-            // Inside the run method
             else if (choices == 4) {
                 updatePrediction(scan);
             }
             else if (choices == 9) {
                 System.out.println("4");
-                // Exit
-                scan.close();  // Close the scanner before exiting
+                scan.close();
                 return;
             } else {
                 System.out.println("Invalid choice");
@@ -53,9 +70,6 @@ public class ForecastFunctions {
 
 
     }
-
-
-
 
 
 
@@ -82,7 +96,9 @@ public class ForecastFunctions {
             System.out.println("ID "+ prediction.getId() + "\nDate " + prediction.getDate() + "\n " +  prediction.getHour() + hour +  "\n temp " +prediction.getTemperature() + " C");
         }
 
+
     }
+
     private void createNewPrediction(Scanner scan) throws IOException {
         System.out.println("Create prediction");
         System.out.println("Ange datum");
@@ -90,12 +106,7 @@ public class ForecastFunctions {
         System.out.println("Hour");
         int hour = scan.nextInt();
         System.out.println("Temp");
-
-
-        // Validate temperature input
-        float temp = 0.0f;
-        temp = scan.nextFloat();
-
+        float temp = scan.nextFloat();
 
 
         // Skapa en instans som man kan mata in
@@ -106,7 +117,9 @@ public class ForecastFunctions {
         forecast.setTemperature(temp);
         forecastService.add(forecast);
 
+/*
 
+        //DETTA ÄR FÖR JSON
 
         var objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(forecast);
@@ -115,6 +128,8 @@ public class ForecastFunctions {
         System.out.println("Saved forecast as JSON" + json);
 
 
+ */
+
     }
 
     private void updatePrediction(Scanner scan) {
@@ -122,7 +137,7 @@ public class ForecastFunctions {
         System.out.println("Enter the ID of the prediction you want to update:");
         UUID idToUpdate = UUID.fromString(scan.next());
 
-        // Find the forecast to update
+        //Fråga läraren om denna
         Forecast existingForecast = forecastService.getForecasts().stream()
                 .filter(forecast -> forecast.getId().equals(idToUpdate))
                 .findFirst()
@@ -133,7 +148,6 @@ public class ForecastFunctions {
             System.out.println("Enter new temperature:");
             float newTemperature = scan.nextFloat();
 
-            // Update the forecast
             existingForecast.setTemperature(newTemperature);
             forecastService.update(idToUpdate, existingForecast);
 
@@ -149,8 +163,8 @@ public class ForecastFunctions {
         System.out.println("Enter the ID of the prediction you want to delete:");
         UUID idToDelete = UUID.fromString(scan.next());
         forecastService.delete(idToDelete);
-
         System.out.println("Prediction with ID " + idToDelete + " has been deleted.");
+
     }
 
 }
