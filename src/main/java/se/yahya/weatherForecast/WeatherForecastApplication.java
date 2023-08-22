@@ -30,10 +30,9 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-	forecastFunctions.menu();
+		//Kommenterar ut denna
+	//forecastFunctions.menu();
 	}
-
-
 
 
 
@@ -42,15 +41,3 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 
 
-	/*boolean validInput = false;
-		while (!validInput) {
-			System.out.println("temp");
-			if (scan.hasNextFloat()) {
-				temp = scan.nextFloat();
-				validInput = true;
-			} else {
-				System.out.println("Invalid temperature input. Please enter a valid floating-point number.");
-				scan.next(); // Consume the invalid input to prevent an infinite loop
-			}
-		}
-*/
