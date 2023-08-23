@@ -31,6 +31,7 @@ public class ForecastService {
 
  */
 
+
     public List<Forecast> getForecasts(){
         return forecasts;
     }
@@ -52,6 +53,16 @@ public class ForecastService {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
 
 
     //Föreberedelser för JSON del

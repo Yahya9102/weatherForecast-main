@@ -1,22 +1,33 @@
 package se.yahya.weatherForecast.services;
 
+/*
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
+
+
+ */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
+
+import se.yahya.weatherForecast.api.ForecastAPI;
 import se.yahya.weatherForecast.models.Forecast;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.UUID;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 @Service
 public class ForecastFunctions {
@@ -29,9 +40,8 @@ public class ForecastFunctions {
     MongoDBConnection mongoDBConnection;
      */
 
-
-
-
+@Autowired
+    ForecastAPI forecastAPI;
 
 
     public void menu () throws IOException {
@@ -58,6 +68,10 @@ public class ForecastFunctions {
             }
             else if (choices == 4) {
                 updatePrediction(scan);
+
+            }
+            else if (choices == 5) {
+                forecastAPI.gettingAPI();
             }
             else if (choices == 9) {
                 System.out.println("4");
@@ -74,11 +88,13 @@ public class ForecastFunctions {
 
 
 
+
     private void showHeaderMenu() {
         System.out.println("1. List all");
         System.out.println("2. Create");
         System.out.println("3. Delete");
         System.out.println("4. Update");
+        System.out.println("5. API Calls");
         System.out.println("9. Exit");
     }
 

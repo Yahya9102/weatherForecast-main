@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class MongoDBConnection {
     private static final String database_url = "mongodb://localhost:27017";
@@ -26,3 +27,4 @@ public class MongoDBConnection {
         client.close();
     }
 }
+
