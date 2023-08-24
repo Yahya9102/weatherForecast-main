@@ -67,6 +67,7 @@ public class ForecastFunctions {
                 deletePrediction(scan);
             }
             else if (choices == 4) {
+               // updatePrediction(scan);
                 updatePrediction(scan);
 
             }
@@ -85,8 +86,19 @@ public class ForecastFunctions {
 
     }
 
+    private void updatePrediction(Scanner scan) {
+        allPredictions(scan);
+        System.out.println("Ange id");
+        UUID Uid = UUID.fromString(scan.next());
+        int id = Integer.parseInt(Uid.toString());
 
-
+        var forecast = forecastService.getByIndex(id);
+        System.out.println("Date" + forecast.getDate() + "\n hour"  + forecast.getHour() + "\ntemp" + forecast.getTemperature());
+        System.out.println("ange ny temp");
+        float newTemp = scan.nextFloat();
+        forecast.setTemperature(newTemp);
+        forecastService.update(Uid, forecast);
+    }
 
 
     private void showHeaderMenu() {
@@ -148,6 +160,11 @@ public class ForecastFunctions {
 
     }
 
+
+
+
+
+    /*
     private void updatePrediction(Scanner scan) {
         System.out.println("Update prediction");
         System.out.println("Enter the ID of the prediction you want to update:");
@@ -173,7 +190,7 @@ public class ForecastFunctions {
         }
     }
 
-
+   */
     private void deletePrediction(Scanner scan) {
         System.out.println("Delete prediction");
         System.out.println("Enter the ID of the prediction you want to delete:");
@@ -184,3 +201,5 @@ public class ForecastFunctions {
     }
 
 }
+
+

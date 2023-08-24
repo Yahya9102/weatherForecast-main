@@ -1,6 +1,11 @@
 package se.yahya.weatherForecast.api;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Filter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +34,8 @@ public class ForecastAPI {
      MongoDBConnection mongoDBConnection;
 
     private static String API_URL = "http://api.weatherapi.com/v1/forecast.json?key=f8aa838b2d5f429493c170228232208&q=59.30996552541549,18.02151508449004";
-        //&days=2&aqi=no&alerts=no
+
+    //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException {
      //   List<String> todayPrognoses = new ArrayList<>();
         //List<String> next24HoursPrognoses = new ArrayList<>();
@@ -47,9 +54,8 @@ public class ForecastAPI {
         while ((line = bufferedReader.readLine()) != null) {
             responseBuilder.append(line);
         }
-
-        bufferedReader.close();
-      // String data = responseBuilder.toString();
+      //  bufferedReader.close();
+       String data = responseBuilder.toString();
 
         //todayPrognoses.add(line);
       //  System.out.println(data);
@@ -57,16 +63,47 @@ public class ForecastAPI {
         var database = mongoDBConnection.getDatabase();
         MongoCollection mongoCollection = database.getCollection("forecasts");
         var doc = new Document();
-        doc = Document.parse(responseBuilder.toString());
+        doc = Document.parse(data.toString());
         mongoCollection.insertOne(doc);
         System.out.println("Document inserted into database");
 
-        mongoDBConnection.close();
+        FindIterable<Document> cursor = mongoCollection.find();
+        var objectmapper = new ObjectMapper();
+
+/*
+
+        for (var document : cursor) {
+            var location = document.get("location", Document.class);
+            var current = document.get("current", Document.class);
+            String name = "";
+            double tempC = 0.0f;
+            if (location != null) {
+                name = location.getString("name");
+            }else {
+                System.out.println("location couldn´t be found");
+            }
+
+            if (current != null){
+                tempC = current.getDouble("temp_c");
+            }else {
+                System.out.println("Temp couldn´t be found");
+            }
+
+
+            System.out.println("Location: " + name);
+            System.out.println("Temperature (C): " + tempC);
+            System.out.println("====================");
+        }
 
 
 
 
 
+
+
+
+
+ */
 
 
 

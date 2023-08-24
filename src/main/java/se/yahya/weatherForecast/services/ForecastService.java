@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ForecastService {
     private static List<Forecast> forecasts = new ArrayList<>();
 
+
 /*
     //Förberedelser för nästa del av kursen med JSON
 
@@ -31,7 +32,6 @@ public class ForecastService {
 
  */
 
-
     public List<Forecast> getForecasts(){
         return forecasts;
     }
@@ -44,6 +44,7 @@ public class ForecastService {
        // saveForecastsToJson();
     }
 
+    /*
     public void update(UUID id, Forecast updatedForecast) {
         for (int i = 0; i < forecasts.size(); i++) {
             if (forecasts.get(i).getId().equals(id)) {
@@ -55,14 +56,13 @@ public class ForecastService {
     }
 
 
+     */
+    public Forecast getByIndex(int id) {
+        return forecasts.get(id);
+    }
 
-
-
-
-
-
-
-
+    public void update(UUID uid, Forecast forecast) {
+    }
 
 
     //Föreberedelser för JSON del
