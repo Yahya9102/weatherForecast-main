@@ -30,12 +30,12 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
+/*
 		String url = "https://jsonplaceholder.typicode.com/posts/1";
 		var objectmapper = new ObjectMapper();
 
-		APIProperties[] apiProps = objectmapper.readValue(new URL(url),APIProperties[].class);
-
+		//GÖR OM DIN KOD TILL DENNA
+		APIProperties apiProps = objectmapper.readValue(new URL(url),APIProperties.class);
 
 
 
@@ -55,6 +55,19 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 
 
+ */
+
+		 String API_URL = "http://api.weatherapi.com/v1/forecast.json?key=f8aa838b2d5f429493c170228232208&q=59.30996552541549,18.02151508449004";
+
+		String apiUrl = API_URL;
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		APIProperties apiProps = objectMapper.readValue(new URL(apiUrl), APIProperties.class);
+
+// Konvertera APIProperties till JSON-sträng
+		String jsonStr = objectMapper.writeValueAsString(apiProps);
+
+		System.out.println(jsonStr); // Skriv ut JSON-strängen i terminalen
 
 
 

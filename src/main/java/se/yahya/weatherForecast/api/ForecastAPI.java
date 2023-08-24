@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
+import se.yahya.weatherForecast.models.APIProperties;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +31,10 @@ import java.util.regex.Pattern;
 public class ForecastAPI {
 
 
+
+    @Autowired
+    APIProperties apiProperties;
+
      @Autowired
      MongoDBConnection mongoDBConnection;
 
@@ -39,16 +44,19 @@ public class ForecastAPI {
     public void gettingAPI() throws IOException {
      //   List<String> todayPrognoses = new ArrayList<>();
         //List<String> next24HoursPrognoses = new ArrayList<>();
-        mongoDBConnection.getDatabase();
+       // mongoDBConnection.getDatabase();
         String apiUrl = API_URL;
-
-
+      var objectmapper = new ObjectMapper();
+        APIProperties apiProps = objectmapper.readValue(new URL(apiUrl),APIProperties.class);
+     /*
         var url = new URL(apiUrl);
         var connection = (HttpURLConnection) url.openConnection();
         connection.connect();
 
+
+        */
       //  int res = connection.getResponseCode();
-        var bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+     /*   var bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         var responseBuilder = new StringBuilder();
         String line;
         while ((line = bufferedReader.readLine()) != null) {
@@ -57,9 +65,12 @@ public class ForecastAPI {
       //  bufferedReader.close();
        String data = responseBuilder.toString();
 
+      */
+
+
         //todayPrognoses.add(line);
       //  System.out.println(data);
-
+/*
         var database = mongoDBConnection.getDatabase();
         MongoCollection mongoCollection = database.getCollection("forecasts");
         var doc = new Document();
@@ -67,8 +78,12 @@ public class ForecastAPI {
         mongoCollection.insertOne(doc);
         System.out.println("Document inserted into database");
 
+
+
         FindIterable<Document> cursor = mongoCollection.find();
-        var objectmapper = new ObjectMapper();
+         */
+
+
 
 /*
 

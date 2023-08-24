@@ -15,13 +15,8 @@ import java.util.UUID;
 public class ForecastService {
     private static List<Forecast> forecasts = new ArrayList<>();
 
-
-/*
-    //Förberedelser för nästa del av kursen med JSON
-
     private static String json = "forecast.json";
     private ObjectMapper objectMapper;
-
 
     public ForecastService(ObjectMapper objectMapper) throws IOException {
         this.objectMapper = objectMapper;
@@ -30,7 +25,6 @@ public class ForecastService {
     //----
 
 
- */
 
     public List<Forecast> getForecasts(){
         return forecasts;

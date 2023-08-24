@@ -98,6 +98,8 @@ public class ForecastFunctions {
         float newTemp = scan.nextFloat();
         forecast.setTemperature(newTemp);
         forecastService.update(Uid, forecast);
+
+
     }
 
 
