@@ -10,6 +10,7 @@ public class Forecast {
     private float temperature;
 
 
+
     public UUID getId() {
         return id;
     }

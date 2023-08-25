@@ -1,4 +1,4 @@
-package se.yahya.weatherForecast.services;
+package se.yahya.weatherForecast.dbConnection.dbMethods;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -9,6 +9,7 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.services.ForecastService;
 
 import java.util.Scanner;
 import java.util.UUID;

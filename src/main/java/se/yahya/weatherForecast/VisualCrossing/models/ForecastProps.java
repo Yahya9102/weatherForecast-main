@@ -1,4 +1,4 @@
-package se.yahya.weatherForecast.models;
+package se.yahya.weatherForecast.VisualCrossing.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

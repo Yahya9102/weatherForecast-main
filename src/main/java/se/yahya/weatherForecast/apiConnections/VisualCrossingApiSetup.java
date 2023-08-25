@@ -1,10 +1,10 @@
-package se.yahya.weatherForecast.api;
+package se.yahya.weatherForecast.apiConnections;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
-import se.yahya.weatherForecast.models.VisualCrossingAPIProps;
-import se.yahya.weatherForecast.models.ForecastProps;
+import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingAPIProps;
+import se.yahya.weatherForecast.VisualCrossing.models.ForecastProps;
 
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class VisualCroppsingApiSetup {
+public class VisualCrossingApiSetup {
 
 
      @Autowired
@@ -28,6 +28,10 @@ public class VisualCroppsingApiSetup {
         URL url = new URL("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/2023-08-24/2023-08-25?unitGroup=metric&include=days&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json");
         ObjectMapper objectMapper = new ObjectMapper();
         ForecastProps forecastProps = objectMapper.readValue(url, ForecastProps.class);
+
+
+
+        /*
         List<VisualCrossingAPIProps> days = forecastProps.getDays();
         var today = LocalTime.now();
         for (VisualCrossingAPIProps day : days) {
@@ -42,6 +46,8 @@ public class VisualCroppsingApiSetup {
 
         }
 
+
+         */
         //todayPrognoses.add(line);
       //  System.out.println(data);
 /*

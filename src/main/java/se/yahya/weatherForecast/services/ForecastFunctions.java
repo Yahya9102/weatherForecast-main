@@ -19,7 +19,7 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import se.yahya.weatherForecast.api.VisualCroppsingApiSetup;
+import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
 import se.yahya.weatherForecast.models.Forecast;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class ForecastFunctions {
      */
 
 @Autowired
-VisualCroppsingApiSetup forecastAPI;
+VisualCrossingApiSetup forecastAPI;
 
 
     public void menu () throws IOException {
