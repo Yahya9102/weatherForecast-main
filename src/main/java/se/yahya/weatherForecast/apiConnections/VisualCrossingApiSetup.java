@@ -1,7 +1,12 @@
 package se.yahya.weatherForecast.apiConnections;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
+import se.yahya.weatherForecast.SMHI.models.SMHIProps;
+import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingAPIProps;
 import se.yahya.weatherForecast.VisualCrossing.models.ForecastProps;
@@ -10,6 +15,7 @@ import se.yahya.weatherForecast.VisualCrossing.models.ForecastProps;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,114 +24,36 @@ public class VisualCrossingApiSetup {
 
      @Autowired
      MongoDBConnection mongoDBConnection;
-    private static String API_URL = "http://api.weatherapi.com/v1/forecast.json?key=f8aa838b2d5f429493c170228232208&q=59.30996552541549,18.02151508449004";
+    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/today/tomorrow?unitGroup=metric&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
 
     //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException {
-        //List<String> todayPrognoses = new ArrayList<>();
-        //List<String> next24HoursPrognoses = new ArrayList<>();
-        //mongoDBConnection.getDatabase();
-        URL url = new URL("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/2023-08-24/2023-08-25?unitGroup=metric&include=days&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        ForecastProps forecastProps = objectMapper.readValue(url, ForecastProps.class);
-
-
-
-        /*
-        List<VisualCrossingAPIProps> days = forecastProps.getDays();
-        var today = LocalTime.now();
-        for (VisualCrossingAPIProps day : days) {
-            System.out.println(forecastProps.getAddress());
-            if (day.getDatetime().equals(today)){
-                System.out.println("Today: " + day.getDatetime());
-                System.out.println(day.getTemp());
-            } else {
-                System.out.println("Tomorrow: " + day.getDatetime());
-                System.out.println(day.getTemp());
-            }
-
-        }
-
-
-         */
-        //todayPrognoses.add(line);
-      //  System.out.println(data);
-/*
+        var objectmapper = new ObjectMapper();
         var database = mongoDBConnection.getDatabase();
-        MongoCollection mongoCollection = database.getCollection("forecasts");
-        var doc = new Document();
-        doc = Document.parse(data.toString());
-        mongoCollection.insertOne(doc);
-        System.out.println("Document inserted into database");
+        URL url = new URL(API_URL);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ForecastProps forecastProps = objectmapper.readValue(url, ForecastProps.class);
+        MongoCollection<Document> collection = database.getCollection("visualCrossing");
+        List<Document> dataPoints = new ArrayList<>();
 
+        for (VisualCrossingAPIProps day : forecastProps.getDays()) {
+            String validTime = day.getDatetime();
+            Integer temp = day.getTemp();
 
-        FindIterable<Document> cursor = mongoCollection.find();
+            Document dataPoint = new Document()
+                    .append("tid", validTime)
+                    .append("temp", temp);
+            dataPoints.add(dataPoint);
+        }
 
-         */
-
-
-
-/*
-
-        for (var document : cursor) {
-            var location = document.get("location", Document.class);
-            var current = document.get("current", Document.class);
-            String name = "";
-            double tempC = 0.0f;
-            if (location != null) {
-                name = location.getString("name");
-            }else {
-                System.out.println("location couldn´t be found");
-            }
-
-            if (current != null){
-                tempC = current.getDouble("temp_c");
-            }else {
-                System.out.println("Temp couldn´t be found");
-            }
-
-
-            System.out.println("Location: " + name);
-            System.out.println("Temperature (C): " + tempC);
-            System.out.println("====================");
+        if (!dataPoints.isEmpty()) {
+            Document forecastDoc = new Document()
+                    .append("data", dataPoints);
+            collection.insertOne(forecastDoc);
         }
 
 
 
-
-
-
-
-
-
- */
-
-
-
-        /*
-        JSONObject jsonObject = new JSONObject(response);
-        JSONArray hourlyForecast = jsonObject.getJSONObject("forecast").getJSONArray("forecastday")
-                .getJSONObject(0).getJSONArray("hour");
-
-        // Loopa igenom varje timme i de kommande 24 timmarnas prognos
-
-
-
-
-        for (int i = 0; i < hourlyForecast.length(); i++) {
-            JSONObject hourData = hourlyForecast.getJSONObject(i);
-            String time = hourData.getString("time");
-            double temperatureC = hourData.getDouble("temp_c");
-
-            // Skriv ut tid och temperatur för varje timme
-            System.out.println("Time: " + time);
-            System.out.println("Temperature: " + temperatureC + "°C");
-            System.out.println("--------------------------");
-        }
-
-        //printWeatherPrognoses("Prognose", todayPrognoses);
-
-         */
     }
 
 
