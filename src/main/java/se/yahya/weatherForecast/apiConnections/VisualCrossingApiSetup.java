@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
 import se.yahya.weatherForecast.SMHI.models.SMHIProps;
 import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
+import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingHourlyData;
+import se.yahya.weatherForecast.VisualCrossing.models.VisuallCrossingDayData;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingAPIProps;
-import se.yahya.weatherForecast.VisualCrossing.models.ForecastProps;
+//import se.yahya.weatherForecast.VisualCrossing.models.ForecastProps;
 
 
 import java.io.IOException;
@@ -24,35 +26,40 @@ public class VisualCrossingApiSetup {
 
      @Autowired
      MongoDBConnection mongoDBConnection;
-    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/today/tomorrow?unitGroup=metric&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
-
+    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/today/tomorrow?unitGroup=metric&include=days%2Ccurrent%2Chours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
     //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException {
         var objectmapper = new ObjectMapper();
         var database = mongoDBConnection.getDatabase();
         URL url = new URL(API_URL);
         ObjectMapper objectMapper = new ObjectMapper();
-        ForecastProps forecastProps = objectmapper.readValue(url, ForecastProps.class);
+        VisualCrossingAPIProps visualCrossingAPIProps = objectmapper.readValue(url, VisualCrossingAPIProps.class);
         MongoCollection<Document> collection = database.getCollection("visualCrossing");
         List<Document> dataPoints = new ArrayList<>();
 
-        for (VisualCrossingAPIProps day : forecastProps.getDays()) {
+        for (VisuallCrossingDayData day : visualCrossingAPIProps.getDays()) {
             String validTime = day.getDatetime();
-            Integer temp = day.getTemp();
 
-            Document dataPoint = new Document()
-                    .append("tid", validTime)
-                    .append("temp", temp);
-            dataPoints.add(dataPoint);
+
+            for (VisualCrossingHourlyData hour : day.getHours()) {
+                String hourDatetime = hour.getDatetime();
+                Double hourTemp = hour.getTemp();
+
+                Document dataPoint = new Document()
+                        .append("tid", validTime)
+                        .append("hourDatetime", hourDatetime)
+                        .append("hourTemp", hourTemp);
+                dataPoints.add(dataPoint);
+            }
         }
 
-        if (!dataPoints.isEmpty()) {
+
             Document forecastDoc = new Document()
                     .append("data", dataPoints);
             collection.insertOne(forecastDoc);
-        }
 
 
+mongoDBConnection.close();
 
     }
 

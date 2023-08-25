@@ -9,44 +9,18 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "address",
         "days"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForecastProps {
-
-    @JsonProperty("address")
-    private String address;
-
-    @JsonProperty("days")
-    //@Valid
-    private List<VisualCrossingAPIProps> days;
-
-    @JsonProperty("address")
-    public String getAddress() {
-        return address;
-    }
-
-    @JsonProperty("address")
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @JsonProperty("days")
-    public List<VisualCrossingAPIProps> getDays() {
-        return days;
-    }
-
-    @JsonProperty("days")
-    public void setDays(List<VisualCrossingAPIProps> days) {
-        this.days = days;
-    }
-
+public class VisuallCrossingDayData {
     @JsonProperty("datetime")
     private String datetime;
 
     @JsonProperty("temp")
-    private Integer temp;
+    private Double temp;
+
+    @JsonProperty("hours")
+    private List<VisualCrossingHourlyData> hours;
 
     @JsonProperty("datetime")
     public String getDatetime() {
@@ -59,12 +33,22 @@ public class ForecastProps {
     }
 
     @JsonProperty("temp")
-    public Integer getTemp() {
+    public Double getTemp() {
         return temp;
     }
 
     @JsonProperty("temp")
-    public void setTemp(Integer temp) {
+    public void setTemp(Double temp) {
         this.temp = temp;
+    }
+
+    @JsonProperty("hours")
+    public List<VisualCrossingHourlyData> getHours() {
+        return hours;
+    }
+
+    @JsonProperty("hours")
+    public void setHours(List<VisualCrossingHourlyData> hours) {
+        this.hours = hours;
     }
 }
