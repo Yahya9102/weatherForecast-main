@@ -1,72 +1,46 @@
 package se.yahya.weatherForecast.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
-import org.bson.Document;
-import org.bson.types.ObjectId;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
-import se.yahya.weatherForecast.models.APIProperties;
+import se.yahya.weatherForecast.models.VisualCrossingAPIProps;
+import se.yahya.weatherForecast.models.ForecastProps;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Filter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
-public class ForecastAPI {
+public class VisualCroppsingApiSetup {
 
-
-
-    @Autowired
-    APIProperties apiProperties;
 
      @Autowired
      MongoDBConnection mongoDBConnection;
-
     private static String API_URL = "http://api.weatherapi.com/v1/forecast.json?key=f8aa838b2d5f429493c170228232208&q=59.30996552541549,18.02151508449004";
 
     //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException {
-     //   List<String> todayPrognoses = new ArrayList<>();
+        //List<String> todayPrognoses = new ArrayList<>();
         //List<String> next24HoursPrognoses = new ArrayList<>();
-       // mongoDBConnection.getDatabase();
-        String apiUrl = API_URL;
-      var objectmapper = new ObjectMapper();
-        APIProperties apiProps = objectmapper.readValue(new URL(apiUrl),APIProperties.class);
-     /*
-        var url = new URL(apiUrl);
-        var connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
+        //mongoDBConnection.getDatabase();
+        URL url = new URL("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/2023-08-24/2023-08-25?unitGroup=metric&include=days&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        ForecastProps forecastProps = objectMapper.readValue(url, ForecastProps.class);
+        List<VisualCrossingAPIProps> days = forecastProps.getDays();
+        var today = LocalTime.now();
+        for (VisualCrossingAPIProps day : days) {
+            System.out.println(forecastProps.getAddress());
+            if (day.getDatetime().equals(today)){
+                System.out.println("Today: " + day.getDatetime());
+                System.out.println(day.getTemp());
+            } else {
+                System.out.println("Tomorrow: " + day.getDatetime());
+                System.out.println(day.getTemp());
+            }
 
-
-        */
-      //  int res = connection.getResponseCode();
-     /*   var bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        var responseBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            responseBuilder.append(line);
         }
-      //  bufferedReader.close();
-       String data = responseBuilder.toString();
-
-      */
-
 
         //todayPrognoses.add(line);
       //  System.out.println(data);
@@ -79,8 +53,8 @@ public class ForecastAPI {
         System.out.println("Document inserted into database");
 
 
-
         FindIterable<Document> cursor = mongoCollection.find();
+
          */
 
 
