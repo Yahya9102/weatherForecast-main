@@ -23,8 +23,6 @@ public class SMHIApiSetup {
     MongoDBConnection mongoDBConnection;
     @Autowired
     SMHITimeSeriesData smhiTimeSeriesData;
-
-
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
 
 
@@ -38,9 +36,6 @@ public class SMHIApiSetup {
         List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
 
         MongoCollection<Document> collection = database.getCollection("smhi");
-
-
-
 
         List<Document> dataPoints = new ArrayList<>();
 

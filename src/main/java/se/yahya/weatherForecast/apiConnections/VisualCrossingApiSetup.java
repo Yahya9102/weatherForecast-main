@@ -25,6 +25,7 @@ public class VisualCrossingApiSetup {
     private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/today/tomorrow?unitGroup=metric&include=days%2Ccurrent%2Chours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
     //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException {
+
         var objectmapper = new ObjectMapper();
         var database = mongoDBConnection.getDatabase();
         URL url = new URL(API_URL);
@@ -35,7 +36,6 @@ public class VisualCrossingApiSetup {
 
         for (VisuallCrossingDayData day : visualCrossingAPIProps.getDays()) {
             String validTime = day.getDatetime();
-
 
             for (VisualCrossingHourlyData hour : day.getHours()) {
                 String hourDatetime = hour.getDatetime();
@@ -49,13 +49,11 @@ public class VisualCrossingApiSetup {
             }
         }
 
-
             Document forecastDoc = new Document()
                     .append("data", dataPoints);
             collection.insertOne(forecastDoc);
 
 
-mongoDBConnection.close();
 
     }
 

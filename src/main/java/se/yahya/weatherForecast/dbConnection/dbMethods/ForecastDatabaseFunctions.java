@@ -21,16 +21,12 @@ import java.util.*;
 
 @Service
 public class ForecastDatabaseFunctions {
-
     /*
     @Autowired
     ForecastService forecastService;
-
-
      */
     @Autowired
     MongoDBConnection mongoDBConnection;
-
 
 
     public ForecastDatabaseFunctions(MongoDBConnection mongoDBConnection) {
@@ -39,10 +35,8 @@ public class ForecastDatabaseFunctions {
     }
 
     public void allPredictionsInMongoDB (){
-
         MongoDatabase database = mongoDBConnection.getDatabase();
         MongoCollection<Document> collection = database.getCollection("smhi");
-
         FindIterable<Document> documents = collection.find();
 
         for (var document : documents) {
@@ -52,27 +46,8 @@ public class ForecastDatabaseFunctions {
             for (int i = 0; i < dataArray.size(); i++) {
                 System.out.println("here is the time " + dataArray.get(i));
             }
-
             System.out.println("here is the id " + id);
 
-            /*
-
-
-            if (dataArray != null) {
-                for (Document dataObject : dataArray) {
-                    String tid = dataObject.getString("tid");
-                    var zonedDateTime = ZonedDateTime.parse(tid, formatter);
-
-                    if (zonedDateTime.toLocalDateTime().isEqual(currentDateTime)) {
-                        System.out.println("Nuvarande tid matchar: " + zonedDateTime);
-                    }
-                }
-            } else {
-                System.out.println("Missing or null 'data' array in document.");
-            }
-
-            //System.out.println("Here is everything in MongoDB " +  document.toJson());
- */
         }
 
 
