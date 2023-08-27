@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
+import se.yahya.weatherForecast.services.ForecastFunctions;
 
 
 @SpringBootApplication
@@ -22,13 +23,16 @@ public class WeatherForecastApplication implements CommandLineRunner {
 	@Autowired
 	VisualCrossingApiSetup visualCroppsingApiSetup;
 
+	@Autowired
+	ForecastFunctions forecastFunctions;
+
 	@Override
 	public void run(String... args) throws Exception {
-		//smhiApiSetup.gettingSMHIData();
-		visualCroppsingApiSetup.gettingAPI();
+	//	smhiApiSetup.gettingSMHIData();
+	//	visualCroppsingApiSetup.gettingAPI();
 
 
-//forecastFunctions.menu();
+	forecastFunctions.menu();
 	}
 }
 

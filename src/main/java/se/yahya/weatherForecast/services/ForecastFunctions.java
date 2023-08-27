@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
+import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
+import se.yahya.weatherForecast.dbConnection.dbMethods.ForecastDatabaseFunctions;
 import se.yahya.weatherForecast.models.Forecast;
 
 import java.io.IOException;
@@ -31,10 +33,9 @@ public class ForecastFunctions {
     @Autowired
     ForecastService forecastService;
 
-    /*
     @Autowired
-    MongoDBConnection mongoDBConnection;
-     */
+    ForecastDatabaseFunctions forecastDatabaseFunctions;
+
 
 @Autowired
 VisualCrossingApiSetup forecastAPI;
@@ -54,7 +55,8 @@ VisualCrossingApiSetup forecastAPI;
 
             if (choices == 1) {
                 System.out.println("1");
-                allPredictions(scan);
+                forecastDatabaseFunctions.allPredictionsInMongoDB();
+               // allPredictions(scan);
             } else if (choices == 2) {
                 System.out.println("2");
 
@@ -107,6 +109,7 @@ VisualCrossingApiSetup forecastAPI;
         System.out.println("5. API Calls");
         System.out.println("9. Exit");
     }
+
 
     private void allPredictions(Scanner scan) {
         String hour;

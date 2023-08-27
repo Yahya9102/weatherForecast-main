@@ -1,19 +1,17 @@
 package se.yahya.weatherForecast.apiConnections;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
-import se.yahya.weatherForecast.SMHI.models.SMHIProps;
 import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
+import se.yahya.weatherForecast.SMHI.models.SMHIProps;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class SMHIApiSetup {
     @Autowired
     MongoDBConnection mongoDBConnection;
     @Autowired
-    SMHIProps smhiProps;
+    SMHITimeSeriesData smhiTimeSeriesData;
 
 
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
@@ -36,8 +34,8 @@ public class SMHIApiSetup {
         var database = mongoDBConnection.getDatabase();
         Document smhiDoc = new Document();
 
-        SMHIProps smhiProps = objectmapper.readValue(url, SMHIProps.class);
-        List<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
+        SMHITimeSeriesData smhiTimeSeriesData = objectmapper.readValue(url, SMHITimeSeriesData.class);
+        List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
 
         MongoCollection<Document> collection = database.getCollection("smhi");
 
@@ -48,7 +46,7 @@ public class SMHIApiSetup {
 
 
 
-        for (SMHITimeSeriesData timeSeries : timeSeriesList) {
+        for (SMHIProps timeSeries : timeSeriesList) {
             String validTime = timeSeries.getValidTime();
             List<Float> values = new ArrayList<>();
 

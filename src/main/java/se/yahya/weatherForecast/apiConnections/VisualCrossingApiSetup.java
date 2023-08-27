@@ -4,9 +4,6 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
-import se.yahya.weatherForecast.SMHI.models.SMHIProps;
-import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
 import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingHourlyData;
 import se.yahya.weatherForecast.VisualCrossing.models.VisuallCrossingDayData;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
@@ -16,7 +13,6 @@ import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingAPIProps;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 

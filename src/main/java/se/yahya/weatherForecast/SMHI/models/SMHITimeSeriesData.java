@@ -5,21 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SMHITimeSeriesData {
-    @JsonProperty("validTime")
-    private String validTime;
+    @JsonProperty("timeSeries")
+    private List<SMHIProps> timeSeries;
 
-    @JsonProperty("parameters")
-    private List<SMHIParameter> parameters;
-
-    public String getValidTime() {
-        return validTime;
+    @JsonProperty("timeSeries")
+    public List<SMHIProps> getTimeSeries() {
+        return timeSeries;
     }
 
-    public List<SMHIParameter> getParameters() {
-        return parameters;
+    @JsonProperty("timeSeries")
+    public void setTimeSeries(List<SMHIProps> timeSeries) {
+        this.timeSeries = timeSeries;
     }
 }
