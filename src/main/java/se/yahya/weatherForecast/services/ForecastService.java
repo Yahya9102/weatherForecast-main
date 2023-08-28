@@ -21,8 +21,6 @@ public class ForecastService {
     private static List<Forecast> forecasts = new ArrayList<>();
 
 
-@Autowired
-Forecast forecast;
 
 
     public ForecastService(){
@@ -33,9 +31,9 @@ Forecast forecast;
         }
     }
     private List<Forecast> readFromFile() throws IOException {
-        if(!Files.exists(Path.of("predictions.json"))) return new ArrayList<Forecast>();
+        if(!Files.exists(Path.of("forecastPrediction.json"))) return new ArrayList<Forecast>();
         ObjectMapper objectMapper = getObjectMapper();
-        var jsonStr = Files.readString(Path.of("predictions.json"));
+        var jsonStr = Files.readString(Path.of("forecastPrediction.json"));
         return  new ArrayList(Arrays.asList(objectMapper.readValue(jsonStr, Forecast[].class ) ));
     }
 
@@ -48,9 +46,10 @@ Forecast forecast;
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, weatherPredictions);
 
-        Files.writeString(Path.of("predictions.json"), stringWriter.toString());
+        Files.writeString(Path.of("forecastPrediction.json"), stringWriter.toString());
 
     }
+
 
     private static ObjectMapper getObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
