@@ -1,23 +1,31 @@
 package se.yahya.weatherForecast.SMHI.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
+
 @Service
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SMHITimeSeriesData {
-    @JsonProperty("timeSeries")
-    private List<SMHIProps> timeSeries;
+public class SMHITimeSeriesData{
+    public Date validTime;
+    public ArrayList<SMHIParameter> parameters;
 
-    @JsonProperty("timeSeries")
-    public List<SMHIProps> getTimeSeries() {
-        return timeSeries;
+    public Date getValidTime() {
+        return validTime;
     }
 
-    @JsonProperty("timeSeries")
-    public void setTimeSeries(List<SMHIProps> timeSeries) {
-        this.timeSeries = timeSeries;
+    public void setValidTime(Date validTime) {
+        this.validTime = validTime;
+    }
+
+    public ArrayList<SMHIParameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(ArrayList<SMHIParameter> parameters) {
+        this.parameters = parameters;
     }
 }
+

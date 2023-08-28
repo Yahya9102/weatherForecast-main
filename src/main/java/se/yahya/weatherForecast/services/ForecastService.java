@@ -1,30 +1,114 @@
 package se.yahya.weatherForecast.services;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.models.Forecast;
 
-import java.io.File;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 @Service
 public class ForecastService {
     private static List<Forecast> forecasts = new ArrayList<>();
 
-    private static String json = "forecast.json";
-    private ObjectMapper objectMapper;
-
-    public ForecastService(ObjectMapper objectMapper) throws IOException {
-        this.objectMapper = objectMapper;
-      //  loadForecastsFromJson();
+    public ForecastService(){
+        try {
+            forecasts = readFromFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-    //----
+    private List<Forecast> readFromFile() throws IOException {
+        if(!Files.exists(Path.of("predictions.json"))) return new ArrayList<Forecast>();
+        ObjectMapper objectMapper = getObjectMapper();
+        var jsonStr = Files.readString(Path.of("predictions.json"));
+        return  new ArrayList(Arrays.asList(objectMapper.readValue(jsonStr, Forecast[].class ) ));
+    }
 
 
+    private void writeAllToFile(List<Forecast> weatherPredictions) throws IOException {
+        ObjectMapper objectMapper = getObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+
+        StringWriter stringWriter = new StringWriter();
+        objectMapper.writeValue(stringWriter, weatherPredictions);
+
+        Files.writeString(Path.of("predictions.json"), stringWriter.toString());
+
+    }
+
+    private static ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        //mapper.registerModule(new JavaTimeModule());
+        return mapper;
+    }
+
+
+
+    public List<Forecast> getForecasts(){
+        return forecasts;
+    }
+    public void add(Forecast forecast) throws IOException {
+        forecasts.add(forecast);
+        writeAllToFile(forecasts);
+    }
+
+
+    public Forecast getByIndex(int i) {
+        return forecasts.get(i);
+    }
+
+    public void update(Forecast forecastFromUser) throws IOException {
+        //
+        var foreCastInList = get(forecastFromUser.getId()).get();
+        foreCastInList.setTemperature(forecastFromUser.getTemperature());
+        foreCastInList.setDate(forecastFromUser.getDate());
+        foreCastInList.setHour(forecastFromUser.getHour());
+
+        writeAllToFile(forecasts);
+    }
+
+    public Optional<Forecast> get(UUID id) {
+        return getForecasts().stream().filter(forecast -> forecast.getId().equals(id))
+                .findFirst();
+    }
+
+    public void delete(UUID id) {
+        var forecast = getForecasts().stream().filter(forecast1 -> forecast1.getId().equals(id)).findFirst();
+        if ((forecast.isPresent())){
+            forecasts.remove(forecast.get());
+        }
+
+    }
+
+    /*
+    public void delete(UUID id) {
+        forecasts.removeIf(forecast -> forecast.getId().equals(id));
+        // saveForecastsToJson();
+    }
+
+     */
+}
+
+/*
+import org.springframework.stereotype.Service;
+import se.yahya.weatherForecast.models.Forecast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+public class ForecastService {
+    private static List<Forecast> forecasts = new ArrayList<>();
 
     public List<Forecast> getForecasts(){
         return forecasts;
@@ -38,7 +122,9 @@ public class ForecastService {
        // saveForecastsToJson();
     }
 
-    /*
+
+
+/*
     public void update(UUID id, Forecast updatedForecast) {
         for (int i = 0; i < forecasts.size(); i++) {
             if (forecasts.get(i).getId().equals(id)) {
@@ -50,28 +136,5 @@ public class ForecastService {
     }
 
 
-     */
-    public Forecast getByIndex(int id) {
-        return forecasts.get(id);
-    }
+ */
 
-    public void update(UUID uid, Forecast forecast) {
-    }
-
-
-    //Föreberedelser för JSON del
-    /*
-    private void loadForecastsFromJson() throws IOException {
-        var file = new File(json);
-        forecasts = objectMapper.readValue(file, new TypeReference<>() {});
-
-    }
-
-    private void saveForecastsToJson() throws IOException {
-        objectMapper.writeValue(new File(json), forecasts);
-    }
-
-     //----
-
-     */
-}

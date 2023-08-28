@@ -38,17 +38,18 @@ public class ForecastFunctions {
     ForecastDatabaseFunctions forecastDatabaseFunctions;
 
 
-@Autowired
-VisualCrossingApiSetup visualCrossingApiSetup;
-@Autowired
+    @Autowired
+    VisualCrossingApiSetup visualCrossingApiSetup;
+    @Autowired
     SMHIApiSetup smhiApiSetup;
+    @Autowired
+    Forecast forecast;
 
 
-    public void menu () throws IOException {
+    public void menu() throws IOException {
 
 
-
-    var scan = new Scanner(System.in);
+        var scan = new Scanner(System.in);
 
         while (true) {
             showHeaderMenu();
@@ -58,24 +59,21 @@ VisualCrossingApiSetup visualCrossingApiSetup;
 
             if (choices == 1) {
                 System.out.println("1");
-                forecastDatabaseFunctions.allPredictionsInMongoDB();
-               // allPredictions(scan);
+              //  forecastDatabaseFunctions.allPredictionsInMongoDB();
+                // allPredictions(scan);
             } else if (choices == 2) {
                 System.out.println("2");
 
                 createNewPrediction(scan);
-            }else if (choices == 3) {
-                deletePrediction(scan);
-            }
-            else if (choices == 4) {
-               // updatePrediction(scan);
-                updatePrediction(scan);
+            } else if (choices == 3) {
+                 deletePrediction(scan);
+            } else if (choices == 4) {
+                updatePredictions(scan);
+                //   updatePrediction(scan);
 
-            }
-            else if (choices == 5) {
-                 callingAllApi();
-            }
-            else if (choices == 9) {
+            } else if (choices == 5) {
+                callingAllApi();
+            } else if (choices == 9) {
                 System.out.println("4");
                 scan.close();
                 return;
@@ -86,7 +84,7 @@ VisualCrossingApiSetup visualCrossingApiSetup;
 
 
     }
-
+/*
     private void updatePrediction(Scanner scan) {
         allPredictions(scan);
         System.out.println("Ange id");
@@ -104,6 +102,8 @@ VisualCrossingApiSetup visualCrossingApiSetup;
     }
 
 
+ */
+
     private void showHeaderMenu() {
         System.out.println("1. List all");
         System.out.println("2. Create");
@@ -117,15 +117,14 @@ VisualCrossingApiSetup visualCrossingApiSetup;
     private void allPredictions(Scanner scan) {
         String hour;
         System.out.println("Here is a list of all the predictions");
-        for ( var prediction: forecastService.getForecasts()
+        for (var prediction : forecastService.getForecasts()
         ) {
-            if (prediction.getHour() < 12 ){
+            if (prediction.getHour() < 12) {
                 hour = " AM";
-            }
-            else {
+            } else {
                 hour = " PM";
             }
-            System.out.println("ID "+ prediction.getId() + "\nDate " + prediction.getDate() + "\n " +  prediction.getHour() + hour +  "\n temp " +prediction.getTemperature() + " C");
+            System.out.println("ID " + prediction.getId() + "\nDate " + prediction.getDate() + "\n " + prediction.getHour() + hour + "\n temp " + prediction.getTemperature() + " C");
         }
 
 
@@ -149,28 +148,43 @@ VisualCrossingApiSetup visualCrossingApiSetup;
         forecast.setTemperature(temp);
         forecastService.add(forecast);
 
-/*
 
-        //DETTA ÄR FÖR JSON
-
-        var objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(forecast);
-        var file = new File("Forecast.json");
-        objectMapper.writeValue(file,json);
-        System.out.println("Saved forecast as JSON" + json);
-
-
- */
 
     }
-
 
 
     public void callingAllApi() throws IOException {
-        visualCrossingApiSetup.gettingAPI();
+        //    visualCrossingApiSetup.gettingAPI();
         smhiApiSetup.gettingSMHIData();
     }
 
+
+    private void updatePredictions(Scanner scan) throws IOException {
+        allPredictions(scan);
+        System.out.printf("Ange vilken du vill uppdatera:");
+        UUID num = UUID.fromString(scan.next());
+
+        System.out.printf("%d %d CURRENT: %f %n",
+                forecast.getDate(),
+                forecast.getHour(),
+                forecast.getTemperature()
+        );
+        System.out.printf("Ange ny temp:");
+        float temp = scan.nextFloat();
+        forecast.setTemperature(temp);
+        forecastService.update(forecast);
+    }
+
+    private void deletePrediction(Scanner scan) {
+        System.out.println("Delete prediction");
+        System.out.println("Enter the ID of the prediction you want to delete:");
+        UUID idToDelete = UUID.fromString(scan.next());
+        forecastService.delete(idToDelete);
+        System.out.println("Prediction with ID " + idToDelete + " has been deleted.");
+
+    }
+
+}
 
 
     /*
@@ -199,7 +213,7 @@ VisualCrossingApiSetup visualCrossingApiSetup;
         }
     }
 
-   */
+
     private void deletePrediction(Scanner scan) {
         System.out.println("Delete prediction");
         System.out.println("Enter the ID of the prediction you want to delete:");
@@ -212,3 +226,5 @@ VisualCrossingApiSetup visualCrossingApiSetup;
 }
 
 
+
+     */

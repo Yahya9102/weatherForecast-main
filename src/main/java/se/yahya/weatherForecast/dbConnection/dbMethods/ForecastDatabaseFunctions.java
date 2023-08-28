@@ -12,6 +12,7 @@ import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.services.ForecastService;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
@@ -29,12 +30,8 @@ public class ForecastDatabaseFunctions {
     MongoDBConnection mongoDBConnection;
 
 
-    public ForecastDatabaseFunctions(MongoDBConnection mongoDBConnection) {
-        this.mongoDBConnection = mongoDBConnection;
 
-    }
-
-    public void allPredictionsInMongoDB (){
+    public List allPredictionsInMongoDB (){
         MongoDatabase database = mongoDBConnection.getDatabase();
         MongoCollection<Document> collection = database.getCollection("smhi");
         FindIterable<Document> documents = collection.find();
@@ -44,14 +41,22 @@ public class ForecastDatabaseFunctions {
             String id = document.get("_id").toString();
 
             for (int i = 0; i < dataArray.size(); i++) {
-                System.out.println("here is the time " + dataArray.get(i));
+                Document data = dataArray.get(i);
+                String tid = data.getString("tid");
+                var dateTime = LocalDateTime.parse(tid.substring(0,tid.length()), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                var currentHour = LocalDateTime.now();
+                if (dateTime.getHour() == currentHour.getHour() && dateTime.toLocalDate().isEqual(currentHour.toLocalDate())) {
+
+                    System.out.println("here is the id " + id);
+                    System.out.println("here is the time " + data.get("tid") + "\n here is the temp " + data.get("Värden").toString().trim() );
+
+                }
             }
-            System.out.println("here is the id " + id);
+
 
         }
 
-
-
+        return allPredictionsInMongoDB();
     }
 
     private  void insertForecastToMongoDB(Forecast forecast) {

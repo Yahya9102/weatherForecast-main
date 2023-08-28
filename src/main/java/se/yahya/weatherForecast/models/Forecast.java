@@ -1,7 +1,10 @@
 package se.yahya.weatherForecast.models;
 
+import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
+@Service
 public class Forecast {
     private UUID id;
     private int date;

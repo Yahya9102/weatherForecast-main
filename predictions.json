@@ -1,0 +1,31 @@
+[ {
+  "id" : "e427f5bf-d479-4f8d-b5d9-170114e4f7d7",
+  "date" : 19910202,
+  "hour" : 10,
+  "temperature" : 10.1
+}, {
+  "id" : "e427f5bf-d479-4f8d-b5d9-170114e4f7d7",
+  "date" : 19910202,
+  "hour" : 10,
+  "temperature" : 10.1
+}, {
+  "id" : "d0bb15d7-3a0d-4827-988a-d1c30fbf4b8f",
+  "date" : 19910202,
+  "hour" : 13,
+  "temperature" : 13.1
+}, {
+  "id" : "e427f5bf-d479-4f8d-b5d9-170114e4f7d7",
+  "date" : 19910202,
+  "hour" : 10,
+  "temperature" : 10.1
+}, {
+  "id" : null,
+  "date" : 20110202,
+  "hour" : 102,
+  "temperature" : 16.1
+}, {
+  "id" : "7145c0a4-fd8a-4ece-8921-71da7a6081b8",
+  "date" : 20110202,
+  "hour" : 150,
+  "temperature" : 6.1
+} ]
