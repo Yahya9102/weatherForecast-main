@@ -2,7 +2,9 @@ package se.yahya.weatherForecast.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.models.Forecast;
 
 
@@ -14,7 +16,14 @@ import java.util.*;
 
 @Service
 public class ForecastService {
+
+
     private static List<Forecast> forecasts = new ArrayList<>();
+
+
+@Autowired
+Forecast forecast;
+
 
     public ForecastService(){
         try {
@@ -35,7 +44,6 @@ public class ForecastService {
         ObjectMapper objectMapper = getObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
 
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, weatherPredictions);
@@ -80,22 +88,26 @@ public class ForecastService {
                 .findFirst();
     }
 
-    public void delete(UUID id) {
-        var forecast = getForecasts().stream().filter(forecast1 -> forecast1.getId().equals(id)).findFirst();
-        if ((forecast.isPresent())){
-            forecasts.remove(forecast.get());
-        }
 
-    }
-
-    /*
-    public void delete(UUID id) {
+    public void delete(UUID id) throws IOException {
         forecasts.removeIf(forecast -> forecast.getId().equals(id));
+        writeAllToFile(forecasts);
         // saveForecastsToJson();
     }
 
-     */
-}
+    }
+
+
+
+/*
+    public void delete(UUID id) {
+        forecasts.removeIf(forecast -> forecast.getId().equals(id));
+        forecasts.remove(forecasts);
+        // saveForecastsToJson();
+    }
+
+*/
+
 
 /*
 import org.springframework.stereotype.Service;

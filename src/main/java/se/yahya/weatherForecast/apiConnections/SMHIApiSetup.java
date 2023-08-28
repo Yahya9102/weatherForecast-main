@@ -24,6 +24,8 @@ public class SMHIApiSetup {
 
     @Autowired
     Forecast forecast;
+    @Autowired
+    MongoDBConnection mongoDBConnection;
 
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
 
@@ -32,17 +34,14 @@ public class SMHIApiSetup {
     public void gettingSMHIData() throws IOException {
         var url = new URL(url_Link);
         var objectmapper = new ObjectMapper();
-      //  var database = mongoDBConnection.getDatabase();
+      var database = mongoDBConnection.getDatabase();
         //Document smhiDoc = new Document();
         SMHIProps smhiProps = objectmapper.readValue(url, SMHIProps.class);
-      //  List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
-        ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
-    //    MongoCollection<Document> collection = database.getCollection("smhi");
+      // List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
+         ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
+         MongoCollection<Document> collection = database.getCollection("forecasts");
 
-        System.out.println(timeSeriesList);
      //   List<Document> dataPoints = new ArrayList<>();
-
-
 /*
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
             String validTime = String.valueOf(timeSeries.getValidTime());

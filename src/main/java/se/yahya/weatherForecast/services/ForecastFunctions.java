@@ -60,7 +60,7 @@ public class ForecastFunctions {
             if (choices == 1) {
                 System.out.println("1");
               //  forecastDatabaseFunctions.allPredictionsInMongoDB();
-                // allPredictions(scan);
+                allPredictions(scan);
             } else if (choices == 2) {
                 System.out.println("2");
 
@@ -148,8 +148,6 @@ public class ForecastFunctions {
         forecast.setTemperature(temp);
         forecastService.add(forecast);
 
-
-
     }
 
 
@@ -175,10 +173,11 @@ public class ForecastFunctions {
         forecastService.update(forecast);
     }
 
-    private void deletePrediction(Scanner scan) {
+    private void deletePrediction(Scanner scan) throws IOException {
         System.out.println("Delete prediction");
         System.out.println("Enter the ID of the prediction you want to delete:");
         UUID idToDelete = UUID.fromString(scan.next());
+        System.out.println(idToDelete);
         forecastService.delete(idToDelete);
         System.out.println("Prediction with ID " + idToDelete + " has been deleted.");
 
@@ -187,44 +186,3 @@ public class ForecastFunctions {
 }
 
 
-    /*
-    private void updatePrediction(Scanner scan) {
-        System.out.println("Update prediction");
-        System.out.println("Enter the ID of the prediction you want to update:");
-        UUID idToUpdate = UUID.fromString(scan.next());
-
-        //Fråga läraren om denna
-        Forecast existingForecast = forecastService.getForecasts().stream()
-                .filter(forecast -> forecast.getId().equals(idToUpdate))
-                .findFirst()
-                .orElse(null);
-
-
-        if (existingForecast != null) {
-            System.out.println("Enter new temperature:");
-            float newTemperature = scan.nextFloat();
-
-            existingForecast.setTemperature(newTemperature);
-            forecastService.update(idToUpdate, existingForecast);
-
-            System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
-        } else {
-            System.out.println("No prediction found with the given ID.");
-        }
-    }
-
-
-    private void deletePrediction(Scanner scan) {
-        System.out.println("Delete prediction");
-        System.out.println("Enter the ID of the prediction you want to delete:");
-        UUID idToDelete = UUID.fromString(scan.next());
-        forecastService.delete(idToDelete);
-        System.out.println("Prediction with ID " + idToDelete + " has been deleted.");
-
-    }
-
-}
-
-
-
-     */

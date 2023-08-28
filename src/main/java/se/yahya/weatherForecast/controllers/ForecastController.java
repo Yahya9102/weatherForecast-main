@@ -48,7 +48,7 @@ public class ForecastController {
     }
 
     @DeleteMapping("/api/forecasts/{id}")
-    public  ResponseEntity<String> delete(@PathVariable UUID id){
+    public  ResponseEntity<String> delete(@PathVariable UUID id) throws IOException {
         forecastService.delete(id);
         return ResponseEntity.ok("Deleted");
     }
