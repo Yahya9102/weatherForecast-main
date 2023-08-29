@@ -18,6 +18,8 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,66 +37,61 @@ public class SMHIApiSetup {
     public void gettingSMHIData() throws IOException {
         var url = new URL(url_Link);
         var objectMapper = new ObjectMapper();
-        var database = mongoDBConnection.getDatabase();
-        //Document smhiDoc = new Document();
-        SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
-      // List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
-         ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
+          SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
+          ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
 
-
-
-      // MongoCollection<Document> collection = database.getCollection("forecasts");
-
-       List<Document> dataPoints = new ArrayList<>();
 
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
-            String validTime = String.valueOf(timeSeries.getValidTime());
-            List<Double> values = new ArrayList<>();
+            Date validTime = timeSeries.getValidTime();
+            List<Double> values;
+
+            Date currenTime = new Date();
+            Calendar calendar = Calendar.getInstance();
+
+            calendar.setTime(currenTime);
+
+            calendar.add(Calendar.HOUR_OF_DAY, 24);
+            Date tomorrow = calendar.getTime();
+
+            if (validTime.after(currenTime) && validTime.before(tomorrow)) {
+
+                for (SMHIParameter param : timeSeries.getParameters()) {
+                    String paramName = param.getName();
+                    values = param.getValues();
+
+                    if ("t".equals(paramName) || "pcat".equals(paramName)) {
+                        for (Double paramValue : values) {
+                            if ("t".equals(paramName)) {
+                                System.out.println("**************************************");
+                                System.out.println("\n");
+                                System.out.println("Temperatur: " + paramValue);
+
+                            } else if ("pcat".equals(paramName)) {
+
+                                if (paramValue == 0.0) {
+                                    System.out.println("Tid: " + validTime);
+                                    System.out.println("Det kommer inte regna: " + paramValue);
 
 
+                                } else if (paramValue == 3.0) {
+                                    System.out.println("Tid: " + validTime);
+                                    System.out.println("Det kommer regna: " + paramValue);
 
-            //FILTRERA FÖR VARJE TIMME NEXT TO DO
+                                } else if (paramValue == 1) {
 
-            for (SMHIParameter param : timeSeries.getParameters()) {
-                String paramName = param.getName();
-                values = param.getValues();
+                                    System.out.println("Tid: " + validTime);
+                                    System.out.println("Det kommer snöa: " + paramValue);
 
-                if ("t".equals(paramName) || "pcat".equals(paramName)) {
-                    for (Double paramValue : values) {
-                        if ("t".equals(paramName)) {
-                            System.out.println("Temperatur: " + paramValue);
-                        } else if ("pcat".equals(paramName)) {
-
-                            if (paramValue == 0.0) {
-                                System.out.println("Det kommer inte regna: " + paramValue);
-                            } else if (paramValue == 3.0){
-                                System.out.println("Det kommer regna: " + paramValue);
+                                }
                             }
-                            else if (paramValue == 1){
-                                System.out.println("Det kommer snöa: " + paramValue);
-                            }
+
                         }
-
-                        //TRIM THE DECIMALS DOWN
                     }
                 }
+
             }
-
-/*
-            Document dataPoint = new Document()
-                    .append("tid", validTime)
-                    .append("Värden", values);
-            dataPoints.add(dataPoint);
-
-            */
         }
-        /*
-        smhiDoc.append("data", dataPoints);
-        collection.insertOne(smhiDoc);
 
-
-
- */
         //
 /*
         SMHIParameter smhiParameter = objectmapper.readValue(url,SMHIParameter.class);
