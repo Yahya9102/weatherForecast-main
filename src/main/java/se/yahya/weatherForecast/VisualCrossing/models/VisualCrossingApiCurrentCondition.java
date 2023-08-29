@@ -1,10 +1,11 @@
 package se.yahya.weatherForecast.VisualCrossing.models;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Service;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class VisualCrossingHourlyData {
+public class VisualCrossingApiCurrentCondition {
     public String datetime;
     public int datetimeEpoch;
     public double temp;

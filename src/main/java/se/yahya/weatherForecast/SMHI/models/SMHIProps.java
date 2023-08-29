@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-@Service
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SMHIProps{
     public ArrayList<SMHITimeSeriesData> timeSeries;

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,39 +41,54 @@ public class SMHIApiSetup {
       // List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
          ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
 
-       // System.out.println(timeSeriesList);
+
+
       // MongoCollection<Document> collection = database.getCollection("forecasts");
 
-     //   List<Document> dataPoints = new ArrayList<>();
-/*
+       List<Document> dataPoints = new ArrayList<>();
+
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
             String validTime = String.valueOf(timeSeries.getValidTime());
             List<Double> values = new ArrayList<>();
 
 
+
+            //FILTRERA FÖR VARJE TIMME NEXT TO DO
+
             for (SMHIParameter param : timeSeries.getParameters()) {
                 String paramName = param.getName();
+                values = param.getValues();
 
+                if ("t".equals(paramName) || "pcat".equals(paramName)) {
+                    for (Double paramValue : values) {
+                        if ("t".equals(paramName)) {
+                            System.out.println("Temperatur: " + paramValue);
+                        } else if ("pcat".equals(paramName)) {
 
-                if ("t".equals(paramName)) {
-                    values = param.getValues();
-
-                    for (int i = 0; i < values.size(); i++) {
-                        Double tempValues = values.get(i);
-                        values.set(i,tempValues);
+                            if (paramValue == 0.0) {
+                                System.out.println("Det kommer inte regna: " + paramValue);
+                            } else if (paramValue == 3.0){
+                                System.out.println("Det kommer regna: " + paramValue);
+                            }
+                            else if (paramValue == 1){
+                                System.out.println("Det kommer snöa: " + paramValue);
+                            }
+                        }
 
                         //TRIM THE DECIMALS DOWN
                     }
-
-                    break;
                 }
             }
 
+/*
             Document dataPoint = new Document()
                     .append("tid", validTime)
                     .append("Värden", values);
             dataPoints.add(dataPoint);
+
+            */
         }
+        /*
         smhiDoc.append("data", dataPoints);
         collection.insertOne(smhiDoc);
 

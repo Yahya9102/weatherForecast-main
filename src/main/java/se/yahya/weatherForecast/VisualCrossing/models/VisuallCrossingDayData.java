@@ -1,54 +1,90 @@
 package se.yahya.weatherForecast.VisualCrossing.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.List;
+import java.util.ArrayList;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "days"
-})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VisuallCrossingDayData {
-    @JsonProperty("datetime")
-    private String datetime;
+    public String datetime;
+    public int datetimeEpoch;
+    public double temp;
+    public int precip;
+    public double precipprob;
+    public int precipcover;
+    public Object preciptype;
+    public int snow;
+    public ArrayList<VisualCrossingHourlyData> hours;
 
-    @JsonProperty("temp")
-    private Double temp;
-
-    @JsonProperty("hours")
-    private List<VisualCrossingHourlyData> hours;
-
-    @JsonProperty("datetime")
     public String getDatetime() {
         return datetime;
     }
 
-    @JsonProperty("datetime")
     public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 
-    @JsonProperty("temp")
-    public Double getTemp() {
+    public int getDatetimeEpoch() {
+        return datetimeEpoch;
+    }
+
+    public void setDatetimeEpoch(int datetimeEpoch) {
+        this.datetimeEpoch = datetimeEpoch;
+    }
+
+    public double getTemp() {
         return temp;
     }
 
-    @JsonProperty("temp")
-    public void setTemp(Double temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
-    @JsonProperty("hours")
-    public List<VisualCrossingHourlyData> getHours() {
+    public int getPrecip() {
+        return precip;
+    }
+
+    public void setPrecip(int precip) {
+        this.precip = precip;
+    }
+
+    public double getPrecipprob() {
+        return precipprob;
+    }
+
+    public void setPrecipprob(double precipprob) {
+        this.precipprob = precipprob;
+    }
+
+    public int getPrecipcover() {
+        return precipcover;
+    }
+
+    public void setPrecipcover(int precipcover) {
+        this.precipcover = precipcover;
+    }
+
+    public Object getPreciptype() {
+        return preciptype;
+    }
+
+    public void setPreciptype(Object preciptype) {
+        this.preciptype = preciptype;
+    }
+
+    public int getSnow() {
+        return snow;
+    }
+
+    public void setSnow(int snow) {
+        this.snow = snow;
+    }
+
+    public ArrayList<VisualCrossingHourlyData> getHours() {
         return hours;
     }
 
-    @JsonProperty("hours")
-    public void setHours(List<VisualCrossingHourlyData> hours) {
+    public void setHours(ArrayList<VisualCrossingHourlyData> hours) {
         this.hours = hours;
     }
 }

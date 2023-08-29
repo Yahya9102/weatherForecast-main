@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-@Service
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SMHIParameter{
     public String name;

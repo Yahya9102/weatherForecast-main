@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 
-@Service
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SMHITimeSeriesData{
     public Date validTime;

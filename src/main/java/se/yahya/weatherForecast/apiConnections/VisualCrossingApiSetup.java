@@ -41,19 +41,27 @@ public class VisualCrossingApiSetup {
                 String hourDatetime = hour.getDatetime();
                 Double hourTemp = hour.getTemp();
 
+                System.out.println(hourDatetime);
+
+                /*
+
                 Document dataPoint = new Document()
                         .append("tid", validTime)
                         .append("hourDatetime", hourDatetime)
                         .append("hourTemp", hourTemp);
                 dataPoints.add(dataPoint);
+
+                 */
             }
         }
-
+/*
             Document forecastDoc = new Document()
                     .append("data", dataPoints);
             collection.insertOne(forecastDoc);
 
 
+
+ */
 
     }
 
