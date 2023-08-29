@@ -27,7 +27,7 @@ public class ForecastController {
 
 
     @GetMapping("/api/forecasts/{id}")
-        public ResponseEntity<Forecast> Get(@PathVariable UUID id){
+        public ResponseEntity<Forecast> getOne(@PathVariable UUID id){
         Optional<Forecast> forecasts = forecastService.get(id);
         if (forecasts.isPresent()) return ResponseEntity.ok(forecasts.get());
         return ResponseEntity.notFound().build();
@@ -48,9 +48,9 @@ public class ForecastController {
     }
 
     @DeleteMapping("/api/forecasts/{id}")
-    public  ResponseEntity<String> delete(@PathVariable UUID id) throws IOException {
+    public  ResponseEntity delete(@PathVariable UUID id) throws IOException {
         forecastService.delete(id);
-        return ResponseEntity.ok("Deleted");
+       return ResponseEntity.ok("delete");
     }
 
 

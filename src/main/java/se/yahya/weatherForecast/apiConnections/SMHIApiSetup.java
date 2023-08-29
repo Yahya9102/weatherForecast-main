@@ -2,6 +2,7 @@ package se.yahya.weatherForecast.apiConnections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,17 @@ public class SMHIApiSetup {
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
 
 
-
     public void gettingSMHIData() throws IOException {
         var url = new URL(url_Link);
-        var objectmapper = new ObjectMapper();
-      var database = mongoDBConnection.getDatabase();
+        var objectMapper = new ObjectMapper();
+        var database = mongoDBConnection.getDatabase();
         //Document smhiDoc = new Document();
-        SMHIProps smhiProps = objectmapper.readValue(url, SMHIProps.class);
+        SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
       // List<SMHIProps> timeSeriesList = smhiTimeSeriesData.getTimeSeries();
          ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
-         MongoCollection<Document> collection = database.getCollection("forecasts");
+
+       // System.out.println(timeSeriesList);
+      // MongoCollection<Document> collection = database.getCollection("forecasts");
 
      //   List<Document> dataPoints = new ArrayList<>();
 /*

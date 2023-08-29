@@ -42,10 +42,8 @@ public class ForecastService {
         ObjectMapper objectMapper = getObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, weatherPredictions);
-
         Files.writeString(Path.of("forecastPrediction.json"), stringWriter.toString());
 
     }

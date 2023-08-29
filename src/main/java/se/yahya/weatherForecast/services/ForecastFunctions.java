@@ -158,19 +158,27 @@ public class ForecastFunctions {
 
 
     private void updatePredictions(Scanner scan) throws IOException {
-        allPredictions(scan);
-        System.out.printf("Ange vilken du vill uppdatera:");
-        UUID num = UUID.fromString(scan.next());
+        System.out.println("Update prediction");
+        System.out.println("Enter the ID of the prediction you want to update:");
+        UUID idToUpdate = UUID.fromString(scan.next());
 
-        System.out.printf("%d %d CURRENT: %f %n",
-                forecast.getDate(),
-                forecast.getHour(),
-                forecast.getTemperature()
-        );
-        System.out.printf("Ange ny temp:");
-        float temp = scan.nextFloat();
-        forecast.setTemperature(temp);
-        forecastService.update(forecast);
+        // Find the forecast to update
+        Forecast existingForecast = forecastService.getForecasts().stream()
+                .filter(forecast -> forecast.getId().equals(idToUpdate))
+                .findFirst()
+                .orElse(null);
+
+        if (existingForecast != null) {
+            System.out.println("Enter new temperature:");
+            float newTemperature = scan.nextFloat();
+
+            existingForecast.setTemperature(newTemperature);
+            forecastService.update(existingForecast);
+
+            System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
+        } else {
+            System.out.println("No prediction found with the given ID.");
+        }
     }
 
     private void deletePrediction(Scanner scan) throws IOException {
