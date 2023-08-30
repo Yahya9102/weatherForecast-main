@@ -2,13 +2,13 @@ package se.yahya.weatherForecast.models;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class Forecast {
     private UUID id;
-    private int date;
-
+    private Date date;
     private int hour;
     private float temperature;
 
@@ -22,11 +22,11 @@ public class Forecast {
         this.id = id;
     }
 
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

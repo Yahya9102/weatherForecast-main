@@ -1,9 +1,6 @@
 package se.yahya.weatherForecast.apiConnections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
@@ -11,23 +8,21 @@ import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
 import se.yahya.weatherForecast.SMHI.models.SMHIProps;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.services.ForecastService;
 
 import java.io.IOException;
-import java.math.RoundingMode;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
 public class SMHIApiSetup {
 
     @Autowired
-    Forecast forecast;
+    GettingAverageFromAPI gettingAverageFromAPI;
+
+    @Autowired
+    ForecastService forecastService;
     @Autowired
     MongoDBConnection mongoDBConnection;
 
@@ -41,56 +36,76 @@ public class SMHIApiSetup {
           ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
 
 
+        System.out.println("Ange en tid:");
+        Scanner scanner = new Scanner(System.in);
+        int response = scanner.nextInt();
+
+
+        Date currenTime = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currenTime);
+        calendar.add(Calendar.HOUR_OF_DAY, 24);
+        Date tomorrow = calendar.getTime();
+
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
             Date validTime = timeSeries.getValidTime();
-            List<Double> values;
-
-            Date currenTime = new Date();
-            Calendar calendar = Calendar.getInstance();
-
-            calendar.setTime(currenTime);
-
-            calendar.add(Calendar.HOUR_OF_DAY, 24);
-            Date tomorrow = calendar.getTime();
-
-            if (validTime.after(currenTime) && validTime.before(tomorrow)) {
-
-                for (SMHIParameter param : timeSeries.getParameters()) {
-                    String paramName = param.getName();
-                    values = param.getValues();
-
-                    if ("t".equals(paramName) || "pcat".equals(paramName)) {
-                        for (Double paramValue : values) {
-                            if ("t".equals(paramName)) {
-                                System.out.println("**************************************");
-                                System.out.println("\n");
-                                System.out.println("Temperatur: " + paramValue);
-
-                            } else if ("pcat".equals(paramName)) {
-
-                                if (paramValue == 0.0) {
-                                    System.out.println("Tid: " + validTime);
-                                    System.out.println("Det kommer inte regna: " + paramValue);
+            calendar.setTime(validTime);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
 
-                                } else if (paramValue == 3.0) {
-                                    System.out.println("Tid: " + validTime);
-                                    System.out.println("Det kommer regna: " + paramValue);
+            if (validTime.after(currenTime) && validTime.before(tomorrow) &&
+                    hour == response) {
 
-                                } else if (paramValue == 1) {
+                    for (SMHIParameter param : timeSeries.getParameters()) {
+                        String paramName = param.getName();
+                        List<Float>  values = param.getValues();
 
-                                    System.out.println("Tid: " + validTime);
-                                    System.out.println("Det kommer snöa: " + paramValue);
+                        if ("t".equals(paramName) || "pcat".equals(paramName)) {
+                            for (Float paramValue : values) {
+                                    if ("t".equals(paramName)) {
 
-                                }
-                            }
+                                        System.out.println("Temperatur: " + paramValue);
 
+                                        gettingAverageFromAPI.setSMHIDate(validTime);
+                                        System.out.println("Saved Temp: " + gettingAverageFromAPI.getSMHItemp());
+                                        gettingAverageFromAPI.setSMHIhour( hour);
+                                        System.out.println("Saved Hour: " + gettingAverageFromAPI.getSMHIhour());
+                                        gettingAverageFromAPI.setSMHItemp(paramValue);
+                                        System.out.println("Saved date: " + gettingAverageFromAPI.getSMHIDate());
+
+
+
+                                    } else if ("pcat".equals(paramName)) {
+
+                                        if (paramValue == 0.0) {
+                                            System.out.println("Tid: " + validTime);
+                                            System.out.println("Det kommer inte regna: " + paramValue);
+
+
+
+
+                                        } else if (paramValue == 3.0) {
+                                            System.out.println("Tid: " + validTime);
+                                            System.out.println("Det kommer regna: " + paramValue);
+
+                                        } else if (paramValue == 1) {
+
+                                            System.out.println("Tid: " + validTime);
+                                            System.out.println("Det kommer snöa: " + paramValue);
+
+                                        }
+                                    }
+                      }
                         }
-                    }
-                }
 
+          }
             }
         }
+
+
+
+
+
 
         //
 /*
@@ -112,7 +127,8 @@ public class SMHIApiSetup {
             //Mata in informationen i mongoDB
 
 
-        }
+
+    }
 }
 
 

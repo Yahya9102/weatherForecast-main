@@ -33,6 +33,8 @@ public class ForecastController {
         return ResponseEntity.notFound().build();
     }
 
+
+
     @PutMapping("/api/forecasts/{id}")
     public ResponseEntity<Forecast> update(@PathVariable UUID id, @RequestBody Forecast forecast) throws IOException {
       forecastService.update(forecast);

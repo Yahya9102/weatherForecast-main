@@ -19,13 +19,19 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import se.yahya.weatherForecast.apiConnections.GettingAverageFromAPI;
 import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.dbConnection.dbMethods.ForecastDatabaseFunctions;
 import se.yahya.weatherForecast.models.Forecast;
 
+import javax.swing.text.DateFormatter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -45,8 +51,11 @@ public class ForecastFunctions {
     @Autowired
     Forecast forecast;
 
+    @Autowired
+    GettingAverageFromAPI gettingAverageFromAPI;
 
-    public void menu() throws IOException {
+
+    public void menu() throws IOException, ParseException {
 
 
         var scan = new Scanner(System.in);
@@ -59,7 +68,7 @@ public class ForecastFunctions {
 
             if (choices == 1) {
                 System.out.println("1");
-              //  forecastDatabaseFunctions.allPredictionsInMongoDB();
+
                 allPredictions(scan);
             } else if (choices == 2) {
                 System.out.println("2");
@@ -69,11 +78,14 @@ public class ForecastFunctions {
                  deletePrediction(scan);
             } else if (choices == 4) {
                 updatePredictions(scan);
-                //   updatePrediction(scan);
+
 
             } else if (choices == 5) {
                 callingAllApi();
-            } else if (choices == 9) {
+            } else if (choices == 6) {
+                gettingAverageFromAPI.gettingAverage();
+            }
+            else if (choices == 9) {
                 System.out.println("4");
                 scan.close();
                 return;
@@ -110,6 +122,7 @@ public class ForecastFunctions {
         System.out.println("3. Delete");
         System.out.println("4. Update");
         System.out.println("5. API Calls");
+        System.out.println("6. Calculating Average");
         System.out.println("9. Exit");
     }
 
@@ -130,10 +143,14 @@ public class ForecastFunctions {
 
     }
 
-    private void createNewPrediction(Scanner scan) throws IOException {
+    private void createNewPrediction(Scanner scan) throws IOException, ParseException {
         System.out.println("Create prediction");
         System.out.println("Ange datum");
-        int dag = scan.nextInt();
+        String tempDay = scan.next();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date dag = dateFormat.parse(tempDay);
+
+
         System.out.println("Hour");
         int hour = scan.nextInt();
         System.out.println("Temp");
@@ -151,8 +168,8 @@ public class ForecastFunctions {
     }
 
 
-    public void callingAllApi() throws IOException {
-        //    visualCrossingApiSetup.gettingAPI();
+    public void callingAllApi() throws IOException, ParseException {
+          visualCrossingApiSetup.gettingAPI();
         smhiApiSetup.gettingSMHIData();
     }
 

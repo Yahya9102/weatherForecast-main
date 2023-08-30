@@ -28,8 +28,10 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-	smhiApiSetup.gettingSMHIData();
+	//smhiApiSetup.gettingSMHIData();
 	//	visualCroppsingApiSetup.gettingAPI();
+
+
 
 
 	forecastFunctions.menu();

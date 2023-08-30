@@ -19,6 +19,8 @@ import java.util.List;
 @Service
 public class VisualCrossingApiSetup {
 
+    @Autowired
+    GettingAverageFromAPI gettingAverageFromAPI;
 
      @Autowired
      MongoDBConnection mongoDBConnection;
@@ -39,9 +41,14 @@ public class VisualCrossingApiSetup {
 
             for (VisualCrossingHourlyData hour : day.getHours()) {
                 String hourDatetime = hour.getDatetime();
-                Double hourTemp = hour.getTemp();
+                float hourTemp = hour.getTemp();
 
-                System.out.println(hourDatetime);
+                System.out.println("*****************************");
+                System.out.println("The hour is: " + hourDatetime);
+                System.out.println("Visual temp is: " + hourTemp);
+
+                gettingAverageFromAPI.setVisualTemp(hourTemp);
+
 
                 /*
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SMHIParameter{
     public String name;
 
-    public ArrayList<Double> values;
+    public ArrayList<Float> values;
 
     public String getName() {
         return name;
@@ -20,11 +20,11 @@ public class SMHIParameter{
         this.name = name;
     }
 
-    public ArrayList<Double> getValues() {
+    public ArrayList<Float> getValues() {
         return values;
     }
 
-    public void setValues(ArrayList<Double> values) {
+    public void setValues(ArrayList<Float> values) {
         this.values = values;
     }
 }

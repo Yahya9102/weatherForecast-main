@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class VisualCrossingHourlyData {
     public String datetime;
     public int datetimeEpoch;
-    public double temp;
+    public float temp;
     public int precip;
     public int precipprob;
     public int snow;
@@ -29,11 +29,11 @@ public class VisualCrossingHourlyData {
         this.datetimeEpoch = datetimeEpoch;
     }
 
-    public double getTemp() {
+    public float getTemp() {
         return temp;
     }
 
-    public void setTemp(double temp) {
+    public void setTemp(float temp) {
         this.temp = temp;
     }
 
