@@ -1,9 +1,12 @@
 package se.yahya.weatherForecast.controllers;
 
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
 import se.yahya.weatherForecast.dbConnection.dbMethods.ForecastDatabaseFunctions;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.services.ForecastService;
@@ -18,6 +21,17 @@ import java.util.UUID;
 public class ForecastController {
     @Autowired
     ForecastService forecastService;
+
+     @Autowired
+     ForecastDatabaseFunctions forecastDatabaseFunctions;
+
+
+
+    @GetMapping("/api/averageTemp")
+    public ResponseEntity<List<Document>> getAllPredictions() {
+        List<Document> predictions = forecastDatabaseFunctions.allPredictionsInMongoDB();
+        return new ResponseEntity<>(predictions, HttpStatus.OK);
+    }
 
 
     @GetMapping("/api/forecasts")

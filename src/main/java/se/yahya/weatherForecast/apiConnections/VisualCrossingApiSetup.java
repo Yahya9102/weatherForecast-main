@@ -29,12 +29,8 @@ public class VisualCrossingApiSetup {
     public void gettingAPI() throws IOException {
 
         var objectmapper = new ObjectMapper();
-        var database = mongoDBConnection.getDatabase();
         URL url = new URL(API_URL);
-        ObjectMapper objectMapper = new ObjectMapper();
         VisualCrossingAPIProps visualCrossingAPIProps = objectmapper.readValue(url, VisualCrossingAPIProps.class);
-        MongoCollection<Document> collection = database.getCollection("visualCrossing");
-        List<Document> dataPoints = new ArrayList<>();
 
         for (VisuallCrossingDayData day : visualCrossingAPIProps.getDays()) {
             String validTime = day.getDatetime();
@@ -42,7 +38,6 @@ public class VisualCrossingApiSetup {
             for (VisualCrossingHourlyData hour : day.getHours()) {
                 String hourDatetime = hour.getDatetime();
                 float hourTemp = hour.getTemp();
-
                 System.out.println("*****************************");
                 System.out.println("The hour is: " + hourDatetime);
                 System.out.println("Visual temp is: " + hourTemp);
@@ -50,25 +45,10 @@ public class VisualCrossingApiSetup {
                 gettingAverageFromAPI.setVisualTemp(hourTemp);
 
 
-                /*
 
-                Document dataPoint = new Document()
-                        .append("tid", validTime)
-                        .append("hourDatetime", hourDatetime)
-                        .append("hourTemp", hourTemp);
-                dataPoints.add(dataPoint);
-
-                 */
             }
         }
-/*
-            Document forecastDoc = new Document()
-                    .append("data", dataPoints);
-            collection.insertOne(forecastDoc);
 
-
-
- */
 
     }
 

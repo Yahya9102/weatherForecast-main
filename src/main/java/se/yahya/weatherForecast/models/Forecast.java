@@ -12,7 +12,15 @@ public class Forecast {
     private int hour;
     private float temperature;
 
+    private boolean rainOrSnow;
 
+    public boolean isRainOrSnow() {
+        return rainOrSnow;
+    }
+
+    public void setRainOrSnow(boolean rainOrSnow) {
+        this.rainOrSnow = rainOrSnow;
+    }
 
     public UUID getId() {
         return id;

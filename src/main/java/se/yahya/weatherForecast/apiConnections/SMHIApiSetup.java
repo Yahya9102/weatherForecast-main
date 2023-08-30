@@ -52,7 +52,6 @@ public class SMHIApiSetup {
             calendar.setTime(validTime);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-
             if (validTime.after(currenTime) && validTime.before(tomorrow) &&
                     hour == response) {
 
@@ -76,15 +75,14 @@ public class SMHIApiSetup {
 
 
                                     } else if ("pcat".equals(paramName)) {
-
                                         if (paramValue == 0.0) {
+                                            gettingAverageFromAPI.setSMHIRainOrSnow(false);
+
                                             System.out.println("Tid: " + validTime);
                                             System.out.println("Det kommer inte regna: " + paramValue);
 
-
-
-
                                         } else if (paramValue == 3.0) {
+                                           gettingAverageFromAPI.setSMHIRainOrSnow(true);
                                             System.out.println("Tid: " + validTime);
                                             System.out.println("Det kommer regna: " + paramValue);
 
