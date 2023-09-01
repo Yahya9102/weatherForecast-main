@@ -169,8 +169,8 @@ public class ForecastFunctions {
 
 
     public void callingAllApi() throws IOException, ParseException {
-         visualCrossingApiSetup.gettingAPI();
-      //  smhiApiSetup.gettingSMHIData();
+        visualCrossingApiSetup.gettingAPI();
+      //smhiApiSetup.gettingSMHIData();
     }
 
 

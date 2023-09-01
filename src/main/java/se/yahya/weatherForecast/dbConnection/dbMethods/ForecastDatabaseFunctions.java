@@ -50,6 +50,7 @@ public class ForecastDatabaseFunctions {
         List<Document> predictions = new ArrayList<>();
 
         for (Document document : documents) {
+
             predictions.add(document);
         }
 
