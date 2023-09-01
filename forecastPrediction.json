@@ -1,11 +1,7 @@
 [ {
-  "id" : "31099719-6636-4ad4-a765-68a554f8487e",
-  "date" : 1693479600000,
-  "hour" : 13,
-  "temperature" : 18.1
-}, {
   "id" : "6149c995-846c-4358-9e87-2c89fe6dc940",
   "date" : 1693479600000,
   "hour" : 13,
-  "temperature" : 18.1
+  "temperature" : 18.1,
+  "rainOrSnow" : false
 } ]

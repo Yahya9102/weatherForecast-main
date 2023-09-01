@@ -13,41 +13,62 @@ import se.yahya.weatherForecast.VisualCrossing.models.VisualCrossingAPIProps;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class VisualCrossingApiSetup {
 
-    @Autowired
-    GettingAverageFromAPI gettingAverageFromAPI;
+
+
+
+    //@Autowired
+    //GettingAverageFromAPI gettingAverageFromAPI;
 
      @Autowired
      MongoDBConnection mongoDBConnection;
     private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/today/tomorrow?unitGroup=metric&include=days%2Ccurrent%2Chours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
     //&days=2&aqi=no&alerts=no
-    public void gettingAPI() throws IOException {
+    public void gettingAPI() throws IOException, ParseException {
 
         var objectmapper = new ObjectMapper();
         URL url = new URL(API_URL);
         VisualCrossingAPIProps visualCrossingAPIProps = objectmapper.readValue(url, VisualCrossingAPIProps.class);
 
+        Date currentTime = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentTime);
+        calendar.add(Calendar.HOUR_OF_DAY, 24);
+        Date tomorrow = calendar.getTime();
+
+
         for (VisuallCrossingDayData day : visualCrossingAPIProps.getDays()) {
-            String validTime = day.getDatetime();
+            Date validTime = day.getDatetime();
 
-            for (VisualCrossingHourlyData hour : day.getHours()) {
-                String hourDatetime = hour.getDatetime();
-                float hourTemp = hour.getTemp();
-                System.out.println("*****************************");
-                System.out.println("The hour is: " + hourDatetime);
-                System.out.println("Visual temp is: " + hourTemp);
+            for (VisualCrossingHourlyData hoursOfTheDay : day.getHours()) {
+                String hourDatetimeStr = hoursOfTheDay.getDatetime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                Date hourDatetime = dateFormat.parse(hourDatetimeStr);
 
-                gettingAverageFromAPI.setVisualTemp(hourTemp);
+                calendar.setTime(hourDatetime);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
+                if (validTime.after(currentTime) && validTime.before(tomorrow) && hour >= currentHour && hour <= currentHour + 24) {
+                    float hourTemp = hoursOfTheDay.getTemp();
+                    System.out.println("\n*****************************\n");
+                    System.out.println("The hour is: " + hourDatetimeStr);
+                    System.out.println("Visual temp is: " + hourTemp);
 
-
+                    // gettingAverageFromAPI.setVisualTemp(hourTemp);
+                }
             }
         }
+
 
 
     }

@@ -12,6 +12,17 @@ public class Forecast {
     private int hour;
     private float temperature;
 
+
+    private String lastModifiedBy;
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
     private boolean rainOrSnow;
 
     public boolean isRainOrSnow() {

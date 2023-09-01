@@ -2,6 +2,8 @@ package se.yahya.weatherForecast.VisualCrossing.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class VisualCrossingHourlyData {

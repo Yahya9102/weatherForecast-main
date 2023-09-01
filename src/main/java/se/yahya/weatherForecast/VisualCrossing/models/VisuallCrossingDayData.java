@@ -3,10 +3,11 @@ package se.yahya.weatherForecast.VisualCrossing.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VisuallCrossingDayData {
-    public String datetime;
+    public Date datetime;
     public int datetimeEpoch;
     public double temp;
     public int precip;
@@ -16,11 +17,11 @@ public class VisuallCrossingDayData {
     public int snow;
     public ArrayList<VisualCrossingHourlyData> hours;
 
-    public String getDatetime() {
+    public Date getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(String datetime) {
+    public void setDatetime(Date datetime) {
         this.datetime = datetime;
     }
 

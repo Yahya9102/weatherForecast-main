@@ -19,7 +19,7 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import se.yahya.weatherForecast.apiConnections.GettingAverageFromAPI;
+//import se.yahya.weatherForecast.apiConnections.GettingAverageFromAPI;
 import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
 import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
@@ -51,8 +51,8 @@ public class ForecastFunctions {
     @Autowired
     Forecast forecast;
 
-    @Autowired
-    GettingAverageFromAPI gettingAverageFromAPI;
+   // @Autowired
+ //   GettingAverageFromAPI gettingAverageFromAPI;
 
 
     public void menu() throws IOException, ParseException {
@@ -83,7 +83,7 @@ public class ForecastFunctions {
             } else if (choices == 5) {
                 callingAllApi();
             } else if (choices == 6) {
-                gettingAverageFromAPI.gettingAverage();
+              //  gettingAverageFromAPI.gettingAverage();
             }
             else if (choices == 9) {
                 System.out.println("4");
@@ -169,8 +169,8 @@ public class ForecastFunctions {
 
 
     public void callingAllApi() throws IOException, ParseException {
-          visualCrossingApiSetup.gettingAPI();
-        smhiApiSetup.gettingSMHIData();
+         visualCrossingApiSetup.gettingAPI();
+      //  smhiApiSetup.gettingSMHIData();
     }
 
 

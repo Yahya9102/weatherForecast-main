@@ -1,3 +1,5 @@
+
+/*
 package se.yahya.weatherForecast.apiConnections;
 
 import com.mongodb.client.MongoCollection;
@@ -114,6 +116,7 @@ public class GettingAverageFromAPI {
         forecast.setHour(getSMHIhour());
         forecast.setRainOrSnow(isSMHIRainOrSnow());
 
+        /*
         mongoDBConnection.getDatabase();
 
         Document smhiDoc = new Document();
@@ -125,9 +128,12 @@ public class GettingAverageFromAPI {
        collection.insertOne(smhiDoc);
 
 
+
+
     }
 }
 
+            */
 
 
 

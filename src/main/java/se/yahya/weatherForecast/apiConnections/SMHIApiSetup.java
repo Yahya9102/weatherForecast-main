@@ -18,8 +18,8 @@ import java.util.*;
 @Service
 public class SMHIApiSetup {
 
-    @Autowired
-    GettingAverageFromAPI gettingAverageFromAPI;
+   // @Autowired
+    //GettingAverageFromAPI gettingAverageFromAPI;
 
     @Autowired
     ForecastService forecastService;
@@ -35,10 +35,14 @@ public class SMHIApiSetup {
           SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
           ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
 
-
+/*
         System.out.println("Ange en tid:");
         Scanner scanner = new Scanner(System.in);
         int response = scanner.nextInt();
+
+
+
+ */
 
 
         Date currenTime = new Date();
@@ -51,9 +55,10 @@ public class SMHIApiSetup {
             Date validTime = timeSeries.getValidTime();
             calendar.setTime(validTime);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
             if (validTime.after(currenTime) && validTime.before(tomorrow) &&
-                    hour == response) {
+                    hour == currentHour ) {
 
                     for (SMHIParameter param : timeSeries.getParameters()) {
                         String paramName = param.getName();
@@ -61,28 +66,21 @@ public class SMHIApiSetup {
 
                         if ("t".equals(paramName) || "pcat".equals(paramName)) {
                             for (Float paramValue : values) {
+
+
+
                                     if ("t".equals(paramName)) {
 
-                                        System.out.println("Temperatur: " + paramValue);
-
-                                        gettingAverageFromAPI.setSMHIDate(validTime);
-                                        System.out.println("Saved Temp: " + gettingAverageFromAPI.getSMHItemp());
-                                        gettingAverageFromAPI.setSMHIhour( hour);
-                                        System.out.println("Saved Hour: " + gettingAverageFromAPI.getSMHIhour());
-                                        gettingAverageFromAPI.setSMHItemp(paramValue);
-                                        System.out.println("Saved date: " + gettingAverageFromAPI.getSMHIDate());
-
-
+                                        System.out.println("\n***********************\n");
+                                        System.out.println("SMHI Temperatur: " + paramValue);
 
                                     } else if ("pcat".equals(paramName)) {
                                         if (paramValue == 0.0) {
-                                            gettingAverageFromAPI.setSMHIRainOrSnow(false);
-
                                             System.out.println("Tid: " + validTime);
                                             System.out.println("Det kommer inte regna: " + paramValue);
 
                                         } else if (paramValue == 3.0) {
-                                           gettingAverageFromAPI.setSMHIRainOrSnow(true);
+
                                             System.out.println("Tid: " + validTime);
                                             System.out.println("Det kommer regna: " + paramValue);
 
