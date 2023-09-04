@@ -1,18 +1,16 @@
 package se.yahya.weatherForecast.controllers;
 
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
-import se.yahya.weatherForecast.dbConnection.dbMethods.ForecastDatabaseFunctions;
+
 import se.yahya.weatherForecast.dto.ForecastListDTO;
 import se.yahya.weatherForecast.dto.NewForecastDTO;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.services.ForecastService;
 
+import javax.swing.text.Document;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -25,10 +23,9 @@ public class ForecastController {
     @Autowired
     ForecastService forecastService;
 
-     @Autowired
-     ForecastDatabaseFunctions forecastDatabaseFunctions;
 
 
+/*
 
     @GetMapping("/api/averageTemp")
     public ResponseEntity<List<Document>> getAllPredictions() {
@@ -37,11 +34,17 @@ public class ForecastController {
     }
 
 
+
+
+ */
+
     @GetMapping("/api/forecasts")
     public ResponseEntity<List<ForecastListDTO>> getAll() {
+
+
         return new ResponseEntity<>(forecastService.getForecasts().stream().map(forecast-> {var forecastListDTD = new ForecastListDTO();
             forecastListDTD.id = forecast.getId();
-            forecastListDTD.Datum = forecast.getDate();
+            forecastListDTD.Datum = forecast.getCreated();
             forecastListDTD.Temperatur = forecast.getTemperature();
             forecastListDTD.Hour = forecast.getHour();
             return forecastListDTD;}).collect(Collectors.toList()),
@@ -67,7 +70,7 @@ public class ForecastController {
         var forecast = new Forecast();
 
         forecast.setId(id);
-        forecast.setDate(newForecastDTO.getDatum());
+        forecast.setCreated(newForecastDTO.getDatum());
         forecast.setHour(newForecastDTO.getHour());
         forecast.setTemperature(newForecastDTO.getTemperatur());
         //forecast.setLastModifiedBy("Yahya Hussein");

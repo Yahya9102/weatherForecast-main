@@ -7,7 +7,7 @@ import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VisuallCrossingDayData {
-    public Date datetime;
+    public String datetime;
     public int datetimeEpoch;
     public double temp;
     public int precip;
@@ -17,11 +17,11 @@ public class VisuallCrossingDayData {
     public int snow;
     public ArrayList<VisualCrossingHourlyData> hours;
 
-    public Date getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Date datetime) {
+    public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 

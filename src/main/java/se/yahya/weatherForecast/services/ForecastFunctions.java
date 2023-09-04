@@ -1,35 +1,20 @@
 package se.yahya.weatherForecast.services;
 
-/*
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
-
-import org.bson.Document;
-import org.bson.conversions.Bson;
-
-
-
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //import se.yahya.weatherForecast.apiConnections.GettingAverageFromAPI;
 import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
-import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
-import se.yahya.weatherForecast.dbConnection.dbMethods.ForecastDatabaseFunctions;
+
+import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
 
 import javax.swing.text.DateFormatter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,19 +25,14 @@ public class ForecastFunctions {
     @Autowired
     ForecastService forecastService;
 
-    @Autowired
-    ForecastDatabaseFunctions forecastDatabaseFunctions;
-
 
     @Autowired
     VisualCrossingApiSetup visualCrossingApiSetup;
     @Autowired
     SMHIApiSetup smhiApiSetup;
-    @Autowired
-    Forecast forecast;
 
-   // @Autowired
- //   GettingAverageFromAPI gettingAverageFromAPI;
+    // @Autowired
+    //   GettingAverageFromAPI gettingAverageFromAPI;
 
 
     public void menu() throws IOException, ParseException {
@@ -75,17 +55,16 @@ public class ForecastFunctions {
 
                 createNewPrediction(scan);
             } else if (choices == 3) {
-                 deletePrediction(scan);
+                // deletePrediction(scan);
             } else if (choices == 4) {
-                updatePredictions(scan);
+                //      updatePredictions(scan);
 
 
             } else if (choices == 5) {
                 callingAllApi();
             } else if (choices == 6) {
-              //  gettingAverageFromAPI.gettingAverage();
-            }
-            else if (choices == 9) {
+                //  gettingAverageFromAPI.gettingAverage();
+            } else if (choices == 9) {
                 System.out.println("4");
                 scan.close();
                 return;
@@ -137,18 +116,27 @@ public class ForecastFunctions {
             } else {
                 hour = " PM";
             }
-            System.out.println("ID " + prediction.getId() + "\nDate " + prediction.getDate() + "\n " + prediction.getHour() + hour + "\n temp " + prediction.getTemperature() + " C");
+            System.out.println("ID "
+                    + prediction.getId() +
+                    "\nDate " + prediction.getCreated() +
+                    "\n " + prediction.getHour() + hour +
+                    "\n temp " + prediction.getTemperature() + " C" +
+                    "\n Source" + prediction.getDataSource() + "\n");
         }
 
 
     }
 
     private void createNewPrediction(Scanner scan) throws IOException, ParseException {
+
         System.out.println("Create prediction");
         System.out.println("Ange datum");
         String tempDay = scan.next();
+
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date dag = dateFormat.parse(tempDay);
+
+        Instant dag = Instant.now();
 
 
         System.out.println("Hour");
@@ -160,20 +148,22 @@ public class ForecastFunctions {
         // Skapa en instans som man kan mata in
         var forecast = new Forecast();
         forecast.setId(UUID.randomUUID());
-        forecast.setDate(dag);
+        forecast.setCreated(dag);
         forecast.setHour(hour);
         forecast.setTemperature(temp);
+        forecast.setDataSource(DataSource.Console);
         forecastService.add(forecast);
 
     }
 
 
     public void callingAllApi() throws IOException, ParseException {
-        visualCrossingApiSetup.gettingAPI();
-      //smhiApiSetup.gettingSMHIData();
+        //visualCrossingApiSetup.gettingAPI();
+        smhiApiSetup.gettingSMHIData();
     }
+}
 
-
+/*
     private void updatePredictions(Scanner scan) throws IOException {
         System.out.println("Update prediction");
         System.out.println("Enter the ID of the prediction you want to update:");
@@ -211,3 +201,6 @@ public class ForecastFunctions {
 }
 
 
+
+
+ */

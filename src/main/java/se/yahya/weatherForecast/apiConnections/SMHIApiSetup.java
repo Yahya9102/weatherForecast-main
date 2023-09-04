@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
 import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
 import se.yahya.weatherForecast.SMHI.models.SMHIProps;
-import se.yahya.weatherForecast.dbConnection.MongoDBConnection;
+
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.services.ForecastService;
 
@@ -23,8 +23,6 @@ public class SMHIApiSetup {
 
     @Autowired
     ForecastService forecastService;
-    @Autowired
-    MongoDBConnection mongoDBConnection;
 
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
 

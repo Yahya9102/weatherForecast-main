@@ -1,28 +1,24 @@
 package se.yahya.weatherForecast.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.repositories.ForecastRepository;
 
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.time.Instant;
 import java.util.*;
 
 @Service
 public class ForecastService {
 
+    @Autowired
+    private ForecastRepository forecastRepository;
 
-    private static List<Forecast> forecasts = new ArrayList<>();
+   // private static List<Forecast> forecasts = new ArrayList<>();
 
-
-
-
+   /*
     public ForecastService(){
         try {
             forecasts = readFromFile();
@@ -49,6 +45,10 @@ public class ForecastService {
     }
 
 
+    */
+
+    /*
+
     private static ObjectMapper getObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         //mapper.registerModule(new JavaTimeModule());
@@ -56,41 +56,55 @@ public class ForecastService {
     }
 
 
+     */
+
 
     public List<Forecast> getForecasts(){
-        return forecasts;
+    return forecastRepository.findAll();
     }
-    public Forecast add(Forecast forecast) throws IOException {
-        forecast.setId(UUID.randomUUID());
-        forecasts.add(forecast);
-        writeAllToFile(forecasts);
+    public Forecast add(Forecast forecast)  {
+      forecastRepository.save(forecast);
         return forecast;
-    }
+        }
 
 
+
+   //  public List<Forecast> getAverage(float temp){
+     //   return forecastRepository.findTempByDay(Instant.now());
+    // }
+
+
+
+
+
+    /*
     public Forecast getByIndex(int i) {
         return forecasts.get(i);
     }
 
+
+     */
     public void update(Forecast forecastFromUser) throws IOException {
         //
         var foreCastInList = get(forecastFromUser.getId()).get();
         foreCastInList.setTemperature(forecastFromUser.getTemperature());
-        foreCastInList.setDate(forecastFromUser.getDate());
+        foreCastInList.setCreated(forecastFromUser.getCreated());
         foreCastInList.setHour(forecastFromUser.getHour());
 
-        writeAllToFile(forecasts);
+        //writeAllToFile(forecasts);
     }
 
     public Optional<Forecast> get(UUID id) {
-        return getForecasts().stream().filter(forecast -> forecast.getId().equals(id))
-                .findFirst();
+        return forecastRepository.findById(id);
+       // return getForecasts().stream().filter(forecast -> forecast.getId().equals(id))
+         //       .findFirst();
     }
 
 
     public void delete(UUID id) throws IOException {
-        forecasts.removeIf(forecast -> forecast.getId().equals(id));
-        writeAllToFile(forecasts);
+        forecastRepository.deleteById(id);
+      // forecasts.removeIf(forecast -> forecast.getId().equals(id));
+        //writeAllToFile(forecasts);
         // saveForecastsToJson();
     }
 
@@ -108,6 +122,7 @@ public class ForecastService {
     }
 
 */
+
 
 
 /*
@@ -150,4 +165,5 @@ public class ForecastService {
 
 
  */
+
 

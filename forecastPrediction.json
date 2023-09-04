@@ -1,7 +1,13 @@
 [ {
-  "id" : "6149c995-846c-4358-9e87-2c89fe6dc940",
-  "date" : 1693479600000,
+  "id" : "3fb688e3-dd0e-4958-808b-60e41eb6fb5e",
+  "created" : 1580598000000,
+  "updated" : null,
   "hour" : 13,
-  "temperature" : 18.1,
-  "rainOrSnow" : false
+  "temperature" : 13.1,
+  "latitud" : 0.0,
+  "dataSource" : "Console",
+  "lastModifiedBy" : null,
+  "rainOrSnow" : false,
+  "raindOrSnow" : false,
+  "longtitude" : 0.0
 } ]

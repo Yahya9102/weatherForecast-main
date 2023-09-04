@@ -1,20 +1,21 @@
 package se.yahya.weatherForecast.dto;
 
+import java.time.Instant;
 import java.util.Date;
 
 public class NewForecastDTO {
 
 //DTO = DATA TRANSFER OBJECT
-    private Date Datum;
+    private Instant Datum;
     private int Hour;
     private float Temperatur;
 
 
-    public Date getDatum() {
+    public Instant getDatum() {
         return Datum;
     }
 
-    public void setDatum(Date datum) {
+    public void setDatum(Instant datum) {
         Datum = datum;
     }
 

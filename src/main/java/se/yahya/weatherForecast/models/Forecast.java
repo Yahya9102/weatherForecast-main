@@ -1,17 +1,64 @@
 package se.yahya.weatherForecast.models;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
+
 import java.util.UUID;
 
-@Service
+
+
+@Entity
 public class Forecast {
+
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private Date date;
+    private Instant created;
+    private Instant updated;
     private int hour;
     private float temperature;
+    private  boolean RaindOrSnow;
+    private float Longtitude;
+    private float latitud;
+    private DataSource dataSource;
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public boolean isRaindOrSnow() {
+        return RaindOrSnow;
+    }
+
+    public void setRaindOrSnow(boolean raindOrSnow) {
+        RaindOrSnow = raindOrSnow;
+    }
+
+    public float getLongtitude() {
+        return Longtitude;
+    }
+
+    public void setLongtitude(float longtitude) {
+        Longtitude = longtitude;
+    }
+
+    public float getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(float latitud) {
+        this.latitud = latitud;
+    }
 
     private String lastModifiedBy;
 
@@ -41,12 +88,20 @@ public class Forecast {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Instant getCreated() {
+        return created;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Instant updated) {
+        this.updated = updated;
     }
 
     public int getHour() {
