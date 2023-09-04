@@ -9,6 +9,7 @@ import java.time.Instant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -22,10 +23,11 @@ public class Forecast {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private Instant created;
+
     private Instant updated;
     private float longitude;
     private float latitude;
-    private LocalDate predictionDatum;
+    private Date predictionDate;
     private int predictionHour;
     private float predictionTemperature;
     private boolean rainOrSnow;
@@ -71,12 +73,12 @@ public class Forecast {
         this.latitude = latitude;
     }
 
-    public LocalDate getPredictionDatum() {
-        return predictionDatum;
+    public Date getPredictionDate() {
+        return predictionDate;
     }
 
-    public void setPredictionDatum(LocalDate predictionDatum) {
-        this.predictionDatum = predictionDatum;
+    public void setPredictionDate(Date predictionDate) {
+        this.predictionDate = predictionDate;
     }
 
     public int getPredictionHour() {

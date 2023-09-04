@@ -14,8 +14,10 @@ import se.yahya.weatherForecast.services.ForecastService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -50,6 +52,7 @@ public class SMHIApiSetup {
 
 
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
+
             Date validTime = timeSeries.getValidTime();
 
             calendar.setTime(validTime);
@@ -68,37 +71,37 @@ public class SMHIApiSetup {
                             for (Float paramValue : values) {
 
                                     if ("t".equals(paramName)) {
-                                        //System.out.println("\n***********************\n");
-                                        //System.out.println("SMHI Temperatur: " + paramValue);
+
 
                                     } else if ("pcat".equals(paramName)) {
                                         if (paramValue == 0.0) {
                                             rainOrSnow = true;
-                                           // System.out.println("Tid: " + validTime);
-                                            //System.out.println("Det kommer inte regna: " + paramValue);
 
                                         } else if (paramValue == 3.0) {
                                             rainOrSnow = true;
-                                           // System.out.println("Tid: " + validTime);
-                                            //System.out.println("Det kommer regna: " + paramValue);
 
                                         } else if (paramValue == 1) {
                                             rainOrSnow = true;
-                                           // System.out.println("Tid: " + validTime);
-                                           // System.out.println("Det kommer snöa: " + paramValue);
-
-
                                        }
-
 
                                     }
                                     if (paramValue.intValue() > 0) {
+
+                                        /**SE TILL ATT DATUM GÅR MED IN I DATABASEN
+                                         * GÖR SAMMA SAK SOM DENNA FÖR VISUAL
+                                         * */
+
+                                       Date currentDate = validTime;
+
+
+                                        System.out.println(currentDate);
+
                                         forecastFromSmhi.setId(UUID.randomUUID());
                                         forecastFromSmhi.setRainOrSnow(rainOrSnow);
                                         forecastFromSmhi.setPredictionHour(paramValue.intValue());
                                         forecastFromSmhi.setPredictionTemperature(paramValue);
                                         forecastFromSmhi.setDataSource(DataSource.Smhi);
-                                       // forecastFromSmhi.setPredictionDatum(DATUM FIXA);
+                                        forecastFromSmhi.setPredictionDate(currentDate);
                                         forecastRepository.save(forecastFromSmhi);
                                     }
                             }

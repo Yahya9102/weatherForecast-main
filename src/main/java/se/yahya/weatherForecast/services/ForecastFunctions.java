@@ -8,6 +8,7 @@ import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
 
 import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.repositories.ForecastRepository;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -20,6 +21,9 @@ public class ForecastFunctions {
 
     @Autowired
     ForecastService forecastService;
+
+    @Autowired
+    ForecastRepository forecastRepository;
 
 
     @Autowired
@@ -55,7 +59,10 @@ public class ForecastFunctions {
 
             } else if (choices == 5) {
                 callingAllApi();
-            }  else if (choices == 9) {
+            }else if(choices == 6){
+                forecastRepository.deleteAll();
+            }
+            else if (choices == 9) {
                 System.out.println("4");
                 scan.close();
                 return;
@@ -92,6 +99,7 @@ public class ForecastFunctions {
         System.out.println("3. Delete");
         System.out.println("4. Update");
         System.out.println("5. API Calls");
+        System.out.println("6. Delete all in Database");
         System.out.println("9. Exit");
     }
 

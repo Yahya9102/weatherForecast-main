@@ -20,8 +20,7 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 	@Autowired
 	SMHIApiSetup smhiApiSetup;
-	@Autowired
-	ForecastRepository forecastRepository;
+
 
 
 	@Autowired
@@ -33,7 +32,7 @@ public class WeatherForecastApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-	//forecastRepository.deleteAll();
+
 
 
 
