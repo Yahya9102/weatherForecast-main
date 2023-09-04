@@ -16,48 +16,6 @@ public class ForecastService {
     @Autowired
     private ForecastRepository forecastRepository;
 
-   // private static List<Forecast> forecasts = new ArrayList<>();
-
-   /*
-    public ForecastService(){
-        try {
-            forecasts = readFromFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private List<Forecast> readFromFile() throws IOException {
-        if(!Files.exists(Path.of("forecastPrediction.json"))) return new ArrayList<Forecast>();
-        ObjectMapper objectMapper = getObjectMapper();
-        var jsonStr = Files.readString(Path.of("forecastPrediction.json"));
-        return  new ArrayList(Arrays.asList(objectMapper.readValue(jsonStr, Forecast[].class ) ));
-    }
-
-
-    private void writeAllToFile(List<Forecast> weatherPredictions) throws IOException {
-        ObjectMapper objectMapper = getObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        StringWriter stringWriter = new StringWriter();
-        objectMapper.writeValue(stringWriter, weatherPredictions);
-        Files.writeString(Path.of("forecastPrediction.json"), stringWriter.toString());
-
-    }
-
-
-    */
-
-    /*
-
-    private static ObjectMapper getObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        //mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
-
-
-     */
-
 
     public List<Forecast> getForecasts(){
     return forecastRepository.findAll();
@@ -69,43 +27,26 @@ public class ForecastService {
 
 
 
-   //  public List<Forecast> getAverage(float temp){
-     //   return forecastRepository.findTempByDay(Instant.now());
-    // }
 
-
-
-
-
-    /*
-    public Forecast getByIndex(int i) {
-        return forecasts.get(i);
-    }
-
-
-     */
     public void update(Forecast forecastFromUser) throws IOException {
         //
         var foreCastInList = get(forecastFromUser.getId()).get();
-        foreCastInList.setTemperature(forecastFromUser.getTemperature());
+        foreCastInList.setPredictionTemperature(forecastFromUser.getPredictionTemperature());
         foreCastInList.setCreated(forecastFromUser.getCreated());
-        foreCastInList.setHour(forecastFromUser.getHour());
+        foreCastInList.setPredictionHour(forecastFromUser.getPredictionHour());
+        forecastRepository.save(forecastFromUser);
 
-        //writeAllToFile(forecasts);
     }
 
     public Optional<Forecast> get(UUID id) {
         return forecastRepository.findById(id);
-       // return getForecasts().stream().filter(forecast -> forecast.getId().equals(id))
-         //       .findFirst();
+
     }
 
 
     public void delete(UUID id) throws IOException {
         forecastRepository.deleteById(id);
-      // forecasts.removeIf(forecast -> forecast.getId().equals(id));
-        //writeAllToFile(forecasts);
-        // saveForecastsToJson();
+
     }
 
 

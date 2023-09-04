@@ -9,11 +9,9 @@ import se.yahya.weatherForecast.dto.ForecastListDTO;
 import se.yahya.weatherForecast.dto.NewForecastDTO;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.services.ForecastService;
-
-import javax.swing.text.Document;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
+
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,27 +24,21 @@ public class ForecastController {
 
 
 /*
-
     @GetMapping("/api/averageTemp")
     public ResponseEntity<List<Document>> getAllPredictions() {
         List<Document> predictions = forecastDatabaseFunctions.allPredictionsInMongoDB();
         return new ResponseEntity<>(predictions, HttpStatus.OK);
     }
-
-
-
-
  */
 
     @GetMapping("/api/forecasts")
     public ResponseEntity<List<ForecastListDTO>> getAll() {
 
-
         return new ResponseEntity<>(forecastService.getForecasts().stream().map(forecast-> {var forecastListDTD = new ForecastListDTO();
             forecastListDTD.id = forecast.getId();
             forecastListDTD.Datum = forecast.getCreated();
-            forecastListDTD.Temperatur = forecast.getTemperature();
-            forecastListDTD.Hour = forecast.getHour();
+            forecastListDTD.Temperatur = forecast.getPredictionTemperature();
+            forecastListDTD.Hour = forecast.getPredictionHour();
             return forecastListDTD;}).collect(Collectors.toList()),
             HttpStatus.OK);
     }
@@ -67,14 +59,14 @@ public class ForecastController {
 
         //Mappar från DTO till -> entitet
 
+
         var forecast = new Forecast();
 
         forecast.setId(id);
         forecast.setCreated(newForecastDTO.getDatum());
-        forecast.setHour(newForecastDTO.getHour());
-        forecast.setTemperature(newForecastDTO.getTemperatur());
+        forecast.setPredictionHour(newForecastDTO.getHour());
+        forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
         //forecast.setLastModifiedBy("Yahya Hussein");
-
 
         forecastService.update(forecast);
 

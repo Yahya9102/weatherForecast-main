@@ -3,20 +3,16 @@ package se.yahya.weatherForecast.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//import se.yahya.weatherForecast.apiConnections.GettingAverageFromAPI;
 import se.yahya.weatherForecast.apiConnections.SMHIApiSetup;
 import se.yahya.weatherForecast.apiConnections.VisualCrossingApiSetup;
 
 import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
 
-import javax.swing.text.DateFormatter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -30,9 +26,6 @@ public class ForecastFunctions {
     VisualCrossingApiSetup visualCrossingApiSetup;
     @Autowired
     SMHIApiSetup smhiApiSetup;
-
-    // @Autowired
-    //   GettingAverageFromAPI gettingAverageFromAPI;
 
 
     public void menu() throws IOException, ParseException {
@@ -55,16 +48,14 @@ public class ForecastFunctions {
 
                 createNewPrediction(scan);
             } else if (choices == 3) {
-                // deletePrediction(scan);
+                 deletePrediction(scan);
             } else if (choices == 4) {
-                //      updatePredictions(scan);
+                 updatePredictions(scan);
 
 
             } else if (choices == 5) {
                 callingAllApi();
-            } else if (choices == 6) {
-                //  gettingAverageFromAPI.gettingAverage();
-            } else if (choices == 9) {
+            }  else if (choices == 9) {
                 System.out.println("4");
                 scan.close();
                 return;
@@ -101,42 +92,51 @@ public class ForecastFunctions {
         System.out.println("3. Delete");
         System.out.println("4. Update");
         System.out.println("5. API Calls");
-        System.out.println("6. Calculating Average");
         System.out.println("9. Exit");
     }
 
 
     private void allPredictions(Scanner scan) {
         String hour;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         System.out.println("Here is a list of all the predictions");
-        for (var prediction : forecastService.getForecasts()
-        ) {
-            if (prediction.getHour() < 12) {
+        for (var prediction : forecastService.getForecasts()) {
+            if (prediction.getPredictionHour() < 12) {
                 hour = " AM";
             } else {
                 hour = " PM";
             }
-            System.out.println("ID "
+
+            Date createdDate = Date.from(prediction.getCreated());
+            String formattedDate = dateFormat.format(createdDate);
+            System.out.println("***************************************");
+            System.out.println("ID: "
                     + prediction.getId() +
-                    "\nDate " + prediction.getCreated() +
-                    "\n " + prediction.getHour() + hour +
-                    "\n temp " + prediction.getTemperature() + " C" +
-                    "\n Source" + prediction.getDataSource() + "\n");
+                    "\nDate: " + formattedDate +
+                    "\n " + prediction.getPredictionHour() + hour +
+                    "\n temp: " + prediction.getPredictionTemperature() + " C" +
+                    "\nRain or snow: " + prediction.isRainOrSnow() +
+                    "\n Source: " + prediction.getDataSource());
         }
-
-
     }
+
+
 
     private void createNewPrediction(Scanner scan) throws IOException, ParseException {
 
         System.out.println("Create prediction");
-        System.out.println("Ange datum");
-        String tempDay = scan.next();
+        System.out.println("Ange datum (i formatet YYYYMMDD):");
 
+        String tempDay = scan.next();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-        Instant dag = Instant.now();
+        Date parsedDate = dateFormat.parse(tempDay);
+        Instant day = parsedDate.toInstant();
+
+
 
 
         System.out.println("Hour");
@@ -144,26 +144,34 @@ public class ForecastFunctions {
         System.out.println("Temp");
         float temp = scan.nextFloat();
 
+        Boolean rainOrSnow = false;
+        System.out.println("Rain or snow?");
+        if (scan.next().equals("rain")){
+            rainOrSnow = true;
+        }if (scan.next().equals("snow"))
+        {
+            rainOrSnow = true;
+        }
 
-        // Skapa en instans som man kan mata in
+
         var forecast = new Forecast();
         forecast.setId(UUID.randomUUID());
-        forecast.setCreated(dag);
-        forecast.setHour(hour);
-        forecast.setTemperature(temp);
+        forecast.setCreated(day);
+        forecast.setRainOrSnow(rainOrSnow);
+        forecast.setPredictionHour(hour);
+        forecast.setPredictionTemperature(temp);
         forecast.setDataSource(DataSource.Console);
         forecastService.add(forecast);
-
     }
+
 
 
     public void callingAllApi() throws IOException, ParseException {
         //visualCrossingApiSetup.gettingAPI();
         smhiApiSetup.gettingSMHIData();
     }
-}
 
-/*
+
     private void updatePredictions(Scanner scan) throws IOException {
         System.out.println("Update prediction");
         System.out.println("Enter the ID of the prediction you want to update:");
@@ -179,7 +187,7 @@ public class ForecastFunctions {
             System.out.println("Enter new temperature:");
             float newTemperature = scan.nextFloat();
 
-            existingForecast.setTemperature(newTemperature);
+            existingForecast.setPredictionTemperature(newTemperature);
             forecastService.update(existingForecast);
 
             System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
@@ -202,5 +210,3 @@ public class ForecastFunctions {
 
 
 
-
- */

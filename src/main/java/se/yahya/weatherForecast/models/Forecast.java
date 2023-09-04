@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 
 import java.time.Instant;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -21,64 +23,13 @@ public class Forecast {
     private UUID id;
     private Instant created;
     private Instant updated;
-    private int hour;
-    private float temperature;
-    private  boolean RaindOrSnow;
-    private float Longtitude;
-    private float latitud;
-    private DataSource dataSource;
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public boolean isRaindOrSnow() {
-        return RaindOrSnow;
-    }
-
-    public void setRaindOrSnow(boolean raindOrSnow) {
-        RaindOrSnow = raindOrSnow;
-    }
-
-    public float getLongtitude() {
-        return Longtitude;
-    }
-
-    public void setLongtitude(float longtitude) {
-        Longtitude = longtitude;
-    }
-
-    public float getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(float latitud) {
-        this.latitud = latitud;
-    }
-
-    private String lastModifiedBy;
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
+    private float longitude;
+    private float latitude;
+    private LocalDate predictionDatum;
+    private int predictionHour;
+    private float predictionTemperature;
     private boolean rainOrSnow;
-
-    public boolean isRainOrSnow() {
-        return rainOrSnow;
-    }
-
-    public void setRainOrSnow(boolean rainOrSnow) {
-        this.rainOrSnow = rainOrSnow;
-    }
+    private DataSource dataSource;
 
     public UUID getId() {
         return id;
@@ -104,19 +55,59 @@ public class Forecast {
         this.updated = updated;
     }
 
-    public int getHour() {
-        return hour;
+    public float getLongitude() {
+        return longitude;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 
-    public float getTemperature() {
-        return temperature;
+    public float getLatitude() {
+        return latitude;
     }
 
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public LocalDate getPredictionDatum() {
+        return predictionDatum;
+    }
+
+    public void setPredictionDatum(LocalDate predictionDatum) {
+        this.predictionDatum = predictionDatum;
+    }
+
+    public int getPredictionHour() {
+        return predictionHour;
+    }
+
+    public void setPredictionHour(int predictionHour) {
+        this.predictionHour = predictionHour;
+    }
+
+    public float getPredictionTemperature() {
+        return predictionTemperature;
+    }
+
+    public void setPredictionTemperature(float predictionTemperature) {
+        this.predictionTemperature = predictionTemperature;
+    }
+
+    public boolean isRainOrSnow() {
+        return rainOrSnow;
+    }
+
+    public void setRainOrSnow(boolean rainOrSnow) {
+        this.rainOrSnow = rainOrSnow;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

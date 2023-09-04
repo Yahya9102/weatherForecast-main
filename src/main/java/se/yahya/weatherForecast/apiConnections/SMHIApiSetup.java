@@ -7,19 +7,24 @@ import se.yahya.weatherForecast.SMHI.models.SMHIParameter;
 import se.yahya.weatherForecast.SMHI.models.SMHITimeSeriesData;
 import se.yahya.weatherForecast.SMHI.models.SMHIProps;
 
+import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.repositories.ForecastRepository;
 import se.yahya.weatherForecast.services.ForecastService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 
 @Service
 public class SMHIApiSetup {
 
-   // @Autowired
-    //GettingAverageFromAPI gettingAverageFromAPI;
+
+    @Autowired
+    ForecastRepository forecastRepository;
 
     @Autowired
     ForecastService forecastService;
@@ -28,19 +33,13 @@ public class SMHIApiSetup {
 
 
     public void gettingSMHIData() throws IOException {
+        var forecastFromSmhi = new Forecast();
+
         var url = new URL(url_Link);
         var objectMapper = new ObjectMapper();
           SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
           ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
 
-/*
-        System.out.println("Ange en tid:");
-        Scanner scanner = new Scanner(System.in);
-        int response = scanner.nextInt();
-
-
-
- */
 
 
         Date currenTime = new Date();
@@ -49,8 +48,10 @@ public class SMHIApiSetup {
         calendar.add(Calendar.HOUR_OF_DAY, 24);
         Date tomorrow = calendar.getTime();
 
+
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
             Date validTime = timeSeries.getValidTime();
+
             calendar.setTime(validTime);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -61,35 +62,47 @@ public class SMHIApiSetup {
                     for (SMHIParameter param : timeSeries.getParameters()) {
                         String paramName = param.getName();
                         List<Float>  values = param.getValues();
+                        boolean rainOrSnow = false;
 
                         if ("t".equals(paramName) || "pcat".equals(paramName)) {
                             for (Float paramValue : values) {
 
-
-
                                     if ("t".equals(paramName)) {
-
-                                        System.out.println("\n***********************\n");
-                                        System.out.println("SMHI Temperatur: " + paramValue);
+                                        //System.out.println("\n***********************\n");
+                                        //System.out.println("SMHI Temperatur: " + paramValue);
 
                                     } else if ("pcat".equals(paramName)) {
                                         if (paramValue == 0.0) {
-                                            System.out.println("Tid: " + validTime);
-                                            System.out.println("Det kommer inte regna: " + paramValue);
+                                            rainOrSnow = true;
+                                           // System.out.println("Tid: " + validTime);
+                                            //System.out.println("Det kommer inte regna: " + paramValue);
 
                                         } else if (paramValue == 3.0) {
-
-                                            System.out.println("Tid: " + validTime);
-                                            System.out.println("Det kommer regna: " + paramValue);
+                                            rainOrSnow = true;
+                                           // System.out.println("Tid: " + validTime);
+                                            //System.out.println("Det kommer regna: " + paramValue);
 
                                         } else if (paramValue == 1) {
+                                            rainOrSnow = true;
+                                           // System.out.println("Tid: " + validTime);
+                                           // System.out.println("Det kommer snöa: " + paramValue);
 
-                                            System.out.println("Tid: " + validTime);
-                                            System.out.println("Det kommer snöa: " + paramValue);
 
-                                        }
+                                       }
+
+
                                     }
-                      }
+                                    if (paramValue.intValue() > 0) {
+                                        forecastFromSmhi.setId(UUID.randomUUID());
+                                        forecastFromSmhi.setRainOrSnow(rainOrSnow);
+                                        forecastFromSmhi.setPredictionHour(paramValue.intValue());
+                                        forecastFromSmhi.setPredictionTemperature(paramValue);
+                                        forecastFromSmhi.setDataSource(DataSource.Smhi);
+                                       // forecastFromSmhi.setPredictionDatum(DATUM FIXA);
+                                        forecastRepository.save(forecastFromSmhi);
+                                    }
+                            }
+
                         }
 
           }
