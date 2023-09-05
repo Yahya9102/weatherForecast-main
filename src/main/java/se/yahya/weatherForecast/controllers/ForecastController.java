@@ -1,6 +1,7 @@
 package se.yahya.weatherForecast.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import se.yahya.weatherForecast.dto.ForecastListDTO;
 import se.yahya.weatherForecast.dto.NewForecastDTO;
 import se.yahya.weatherForecast.models.Forecast;
+import se.yahya.weatherForecast.repositories.ForecastRepository;
 import se.yahya.weatherForecast.services.ForecastService;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import java.util.Optional;
@@ -21,15 +24,18 @@ public class ForecastController {
     @Autowired
     ForecastService forecastService;
 
+    @Autowired
+    ForecastRepository forecastRepository;
 
 
-/*
-    @GetMapping("/api/averageTemp")
-    public ResponseEntity<List<Document>> getAllPredictions() {
-        List<Document> predictions = forecastDatabaseFunctions.allPredictionsInMongoDB();
-        return new ResponseEntity<>(predictions, HttpStatus.OK);
+    @GetMapping("/api/forecasts/averageTemp/{date}")
+    public ResponseEntity<List<Object[]>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+        List<Object[]> averageTempData = forecastRepository.findAverageTempPerHour(date);
+
+        return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
- */
+
+
 
     @GetMapping("/api/forecasts")
     public ResponseEntity<List<ForecastListDTO>> getAll() {
@@ -67,8 +73,6 @@ public class ForecastController {
         forecast.setPredictionDate(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
-        //forecast.setLastModifiedBy("Yahya Hussein");
-
         forecastService.update(forecast);
 
       return ResponseEntity.ok(forecast);

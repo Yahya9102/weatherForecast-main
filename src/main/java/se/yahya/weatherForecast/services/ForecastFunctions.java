@@ -48,7 +48,7 @@ public class ForecastFunctions {
             if (choices == 1) {
                 System.out.println("1");
 
-                allPredictions(scan);
+                allPredictions();
             } else if (choices == 2) {
                 System.out.println("2");
 
@@ -106,7 +106,7 @@ public class ForecastFunctions {
     }
 
 
-    private void allPredictions(Scanner scan) {
+    private void allPredictions() {
         String hour;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -171,8 +171,8 @@ public class ForecastFunctions {
 
 
     public void callingAllApi() throws IOException, ParseException {
-        //visualCrossingApiSetup.gettingAPI();
-        smhiApiSetup.gettingSMHIData();
+        visualCrossingApiSetup.gettingAPI();
+        //smhiApiSetup.gettingSMHIData();
     }
 
 

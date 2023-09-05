@@ -30,9 +30,6 @@ public class SMHIApiSetup {
     @Autowired
     ForecastRepository forecastRepository;
 
-    @Autowired
-    ForecastService forecastService;
-
     private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
 
 
@@ -43,7 +40,6 @@ public class SMHIApiSetup {
         var objectMapper = new ObjectMapper();
           SMHIProps smhiProps = objectMapper.readValue(url, SMHIProps.class);
           ArrayList<SMHITimeSeriesData> timeSeriesList = smhiProps.getTimeSeries();
-
 
 
         Date currentTime = new Date();
@@ -70,12 +66,7 @@ public class SMHIApiSetup {
 
                     Boolean rainOrSnow = false;
                     if ("t".equals(paramName) || "pcat".equals(paramName)) {
-
-
-
-
                         for (Float paramValue : values) {
-
                             if ("pcat".equals(paramName))
                             {
                                 if (paramValue == 3.0 && paramValue == 1 ){
@@ -99,7 +90,6 @@ public class SMHIApiSetup {
                                 forecastFromSmhi.setPredictionDate(validLocalDate);
                                 forecastFromSmhi.setPredictionHour(hour);
                                 forecastFromSmhi.setDataSource(DataSource.Smhi);
-
                                 forecastRepository.save(forecastFromSmhi);
 
 /*
