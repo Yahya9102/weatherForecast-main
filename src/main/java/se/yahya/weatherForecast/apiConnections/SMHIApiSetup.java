@@ -17,6 +17,8 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -35,7 +37,7 @@ public class SMHIApiSetup {
 
 
     public void gettingSMHIData() throws IOException {
-        var forecastFromSmhi = new Forecast();
+
 
         var url = new URL(url_Link);
         var objectMapper = new ObjectMapper();
@@ -44,23 +46,97 @@ public class SMHIApiSetup {
 
 
 
-        Date currenTime = new Date();
+        Date currentTime = new Date();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currenTime);
-        calendar.add(Calendar.HOUR_OF_DAY, 24);
+        calendar.setTime(currentTime);
+        calendar.add(Calendar.HOUR_OF_DAY, 25);
         Date tomorrow = calendar.getTime();
 
-
         for (SMHITimeSeriesData timeSeries : timeSeriesList) {
-
             Date validTime = timeSeries.getValidTime();
-
             calendar.setTime(validTime);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
-            if (validTime.after(currenTime) && validTime.before(tomorrow) &&
+            LocalDate validLocalDate = validTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            if (validTime.after(currentTime) && validTime.before(tomorrow) &&
                     hour == currentHour ) {
+
+                for (SMHIParameter param : timeSeries.getParameters()) {
+                    String paramName = param.getName();
+                    var forecastFromSmhi = new Forecast();
+                    List<Float>  values = param.getValues();
+
+                    Boolean rainOrSnow = false;
+                    if ("t".equals(paramName) || "pcat".equals(paramName)) {
+
+
+
+
+                        for (Float paramValue : values) {
+
+                            if ("pcat".equals(paramName))
+                            {
+                                if (paramValue == 3.0 && paramValue == 1 ){
+                                    rainOrSnow = true;
+                                }
+                            }
+
+                            if ("t".equals(paramName)) {
+
+
+
+
+                                System.out.println("******************************");
+                                System.out.println("Tid: " + hour);
+                                System.out.println("Temperatur: " + paramValue);
+                                System.out.println(("Datum: " +validLocalDate));
+
+                                forecastFromSmhi.setId(UUID.randomUUID());
+                                forecastFromSmhi.setRainOrSnow(rainOrSnow);
+                                forecastFromSmhi.setPredictionTemperature(paramValue);
+                                forecastFromSmhi.setPredictionDate(validLocalDate);
+                                forecastFromSmhi.setPredictionHour(hour);
+                                forecastFromSmhi.setDataSource(DataSource.Smhi);
+
+                                forecastRepository.save(forecastFromSmhi);
+
+/*
+                            }  if ("pcat".equals(paramName)) {
+                                if (paramValue == 0.0) {
+                                    System.out.println("Det kommer inte regna: " + paramValue);
+                                } else if (paramValue == 3.0) {
+                                    rainOrSnow = true;
+                                    System.out.println("Det kommer regna: " + paramValue);
+                                } else if (paramValue == 1) {
+                                    rainOrSnow = true;
+                                    System.out.println("Det kommer snöa: " + paramValue);
+
+                                }
+
+
+ */
+
+
+                            }
+                           //
+                            //
+
+
+
+
+
+                        }
+
+
+                    }
+
+
+
+                }
+
+                /*
 
                     for (SMHIParameter param : timeSeries.getParameters()) {
                         String paramName = param.getName();
@@ -91,56 +167,29 @@ public class SMHIApiSetup {
                                          * GÖR SAMMA SAK SOM DENNA FÖR VISUAL
                                          * */
 
-                                       Date currentDate = validTime;
-
-
-                                        System.out.println(currentDate);
+/*
 
                                         forecastFromSmhi.setId(UUID.randomUUID());
                                         forecastFromSmhi.setRainOrSnow(rainOrSnow);
-                                        forecastFromSmhi.setPredictionHour(paramValue.intValue());
+                                        forecastFromSmhi.setPredictionHour(currentHour);
                                         forecastFromSmhi.setPredictionTemperature(paramValue);
                                         forecastFromSmhi.setDataSource(DataSource.Smhi);
-                                        forecastFromSmhi.setPredictionDate(currentDate);
+                                        forecastFromSmhi.setPredictionDate(validLocalDate);
                                         forecastRepository.save(forecastFromSmhi);
+
+
                                     }
                             }
 
                         }
-
           }
+                    */
             }
         }
 
 
-
-
-
-
-        //
-/*
-        SMHIParameter smhiParameter = objectmapper.readValue(url,SMHIParameter.class);
-
-
-        Document smhiDoc = new Document();
-
-       smhiDoc.append("testing", smhiParameter.getName().toString());
-       collection.insertOne(smhiDoc);
-        System.out.println("Done");
-
-    }
-
-
-
- */
-
-            //Mata in informationen i mongoDB
-
-
-
     }
 }
-
 
 
 

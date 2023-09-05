@@ -36,9 +36,11 @@ public class ForecastController {
 
         return new ResponseEntity<>(forecastService.getForecasts().stream().map(forecast-> {var forecastListDTD = new ForecastListDTO();
             forecastListDTD.id = forecast.getId();
-            forecastListDTD.Datum = forecast.getCreated();
+            forecastListDTD.Datum = forecast.getPredictionDate();
             forecastListDTD.Temperatur = forecast.getPredictionTemperature();
             forecastListDTD.Hour = forecast.getPredictionHour();
+            forecastListDTD.rainOrSnow = forecast.isRainOrSnow();
+            forecastListDTD.dataSource = forecast.getDataSource();
             return forecastListDTD;}).collect(Collectors.toList()),
             HttpStatus.OK);
     }
@@ -61,9 +63,8 @@ public class ForecastController {
 
 
         var forecast = new Forecast();
-
         forecast.setId(id);
-        forecast.setCreated(newForecastDTO.getDatum());
+        forecast.setPredictionDate(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
         //forecast.setLastModifiedBy("Yahya Hussein");

@@ -22,12 +22,12 @@ public class Forecast {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private Instant created;
+    private LocalDate created;
 
-    private Instant updated;
+    private LocalDate updated;
     private float longitude;
     private float latitude;
-    private Date predictionDate;
+    private LocalDate predictionDate;
     private int predictionHour;
     private float predictionTemperature;
     private boolean rainOrSnow;
@@ -41,19 +41,19 @@ public class Forecast {
         this.id = id;
     }
 
-    public Instant getCreated() {
+    public LocalDate getCreated() {
         return created;
     }
 
-    public void setCreated(Instant created) {
+    public void setCreated(LocalDate created) {
         this.created = created;
     }
 
-    public Instant getUpdated() {
+    public LocalDate getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Instant updated) {
+    public void setUpdated(LocalDate updated) {
         this.updated = updated;
     }
 
@@ -73,11 +73,11 @@ public class Forecast {
         this.latitude = latitude;
     }
 
-    public Date getPredictionDate() {
+    public LocalDate getPredictionDate() {
         return predictionDate;
     }
 
-    public void setPredictionDate(Date predictionDate) {
+    public void setPredictionDate(LocalDate predictionDate) {
         this.predictionDate = predictionDate;
     }
 

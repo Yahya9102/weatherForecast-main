@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -117,12 +119,10 @@ public class ForecastFunctions {
                 hour = " PM";
             }
 
-            Date createdDate = Date.from(prediction.getCreated());
-            String formattedDate = dateFormat.format(createdDate);
             System.out.println("***************************************");
             System.out.println("ID: "
                     + prediction.getId() +
-                    "\nDate: " + formattedDate +
+                    "\nDate: " + prediction.getPredictionDate() +
                     "\n " + prediction.getPredictionHour() + hour +
                     "\n temp: " + prediction.getPredictionTemperature() + " C" +
                     "\nRain or snow: " + prediction.isRainOrSnow() +
@@ -139,12 +139,8 @@ public class ForecastFunctions {
 
         String tempDay = scan.next();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-        Date parsedDate = dateFormat.parse(tempDay);
-        Instant day = parsedDate.toInstant();
-
-
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate day = LocalDate.parse(tempDay,dateFormat);
 
 
         System.out.println("Hour");
