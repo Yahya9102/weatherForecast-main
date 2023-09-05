@@ -39,6 +39,7 @@ public class VisualCrossingApiSetup {
 
         var localDateTime = LocalDateTime.now();
         var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate theDate = LocalDateTime.now().toLocalDate();
 
         for (VisuallCrossingDayData hourDate : timelist) {
 
@@ -53,11 +54,11 @@ public class VisualCrossingApiSetup {
 
                     float hourTemp = hourlyData.getTemp();
 
-                    LocalDate theDate = LocalDateTime.now().toLocalDate();
 
 
                     if (predictionHour == 0) {
-                        theDate = localDateTime.toLocalDate().plusDays(1);
+                     theDate =  theDate.plusDays(1);
+
                     }
 
                     var forecastFromVisuall = new Forecast();
