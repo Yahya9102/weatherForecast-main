@@ -139,7 +139,7 @@ public class ForecastFunctions {
 
         String tempDay = scan.next();
 
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate day = LocalDate.parse(tempDay,dateFormat);
 
 
@@ -150,10 +150,7 @@ public class ForecastFunctions {
 
         Boolean rainOrSnow = false;
         System.out.println("Rain or snow?");
-        if (scan.next().equals("rain")){
-            rainOrSnow = true;
-        }if (scan.next().equals("snow"))
-        {
+        if (scan.next().equals("rain") || scan.next().equals("snow")){
             rainOrSnow = true;
         }
 
@@ -172,7 +169,7 @@ public class ForecastFunctions {
 
     public void callingAllApi() throws IOException, ParseException {
         visualCrossingApiSetup.gettingAPI();
-        //smhiApiSetup.gettingSMHIData();
+        smhiApiSetup.gettingSMHIData();
     }
 
 

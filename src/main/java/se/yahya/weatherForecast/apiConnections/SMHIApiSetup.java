@@ -77,8 +77,6 @@ public class SMHIApiSetup {
                             if ("t".equals(paramName)) {
 
 
-
-
                                 System.out.println("******************************");
                                 System.out.println("Tid: " + hour);
                                 System.out.println("Temperatur: " + paramValue);
@@ -92,92 +90,12 @@ public class SMHIApiSetup {
                                 forecastFromSmhi.setDataSource(DataSource.Smhi);
                                 forecastRepository.save(forecastFromSmhi);
 
-/*
-                            }  if ("pcat".equals(paramName)) {
-                                if (paramValue == 0.0) {
-                                    System.out.println("Det kommer inte regna: " + paramValue);
-                                } else if (paramValue == 3.0) {
-                                    rainOrSnow = true;
-                                    System.out.println("Det kommer regna: " + paramValue);
-                                } else if (paramValue == 1) {
-                                    rainOrSnow = true;
-                                    System.out.println("Det kommer snöa: " + paramValue);
-
-                                }
-
-
- */
-
-
                             }
-                           //
-                            //
-
-
-
-
-
                         }
-
-
                     }
-
-
-
                 }
-
-                /*
-
-                    for (SMHIParameter param : timeSeries.getParameters()) {
-                        String paramName = param.getName();
-                        List<Float>  values = param.getValues();
-                        boolean rainOrSnow = false;
-
-                        if ("t".equals(paramName) || "pcat".equals(paramName)) {
-                            for (Float paramValue : values) {
-
-                                    if ("t".equals(paramName)) {
-
-
-                                    } else if ("pcat".equals(paramName)) {
-                                        if (paramValue == 0.0) {
-                                            rainOrSnow = true;
-
-                                        } else if (paramValue == 3.0) {
-                                            rainOrSnow = true;
-
-                                        } else if (paramValue == 1) {
-                                            rainOrSnow = true;
-                                       }
-
-                                    }
-                                    if (paramValue.intValue() > 0) {
-
-                                        /**SE TILL ATT DATUM GÅR MED IN I DATABASEN
-                                         * GÖR SAMMA SAK SOM DENNA FÖR VISUAL
-                                         * */
-
-/*
-
-                                        forecastFromSmhi.setId(UUID.randomUUID());
-                                        forecastFromSmhi.setRainOrSnow(rainOrSnow);
-                                        forecastFromSmhi.setPredictionHour(currentHour);
-                                        forecastFromSmhi.setPredictionTemperature(paramValue);
-                                        forecastFromSmhi.setDataSource(DataSource.Smhi);
-                                        forecastFromSmhi.setPredictionDate(validLocalDate);
-                                        forecastRepository.save(forecastFromSmhi);
-
-
-                                    }
-                            }
-
-                        }
-          }
-                    */
             }
         }
-
-
     }
 }
 
