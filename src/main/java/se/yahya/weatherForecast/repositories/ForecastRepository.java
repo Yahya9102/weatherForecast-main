@@ -3,6 +3,7 @@ package se.yahya.weatherForecast.repositories;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import se.yahya.weatherForecast.dto.NewForecastDTO;
 import se.yahya.weatherForecast.models.Forecast;
 
 import java.time.LocalDate;
@@ -26,5 +27,6 @@ public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
             "f.predictionDate ASC, " +
             "f.predictionHour ASC")
     List<Object[]> findAverageTempPerHour(LocalDate date);
+
 
 }

@@ -53,15 +53,19 @@ public class VisualCrossingApiSetup {
                     int predictionHour = Integer.parseInt(timeParts[0]);
 
                     float hourTemp = hourlyData.getTemp();
+                    int precip = hourlyData.getPrecip();
 
+                    boolean rainOrSnow = false;
 
+                    if (precip >= 1){
+                        rainOrSnow = true;
+                    }
 
                     if (predictionHour == 0) {
                      theDate =  theDate.plusDays(1);
-
                     }
-
                     var forecastFromVisuall = new Forecast();
+                    forecastFromVisuall.setRainOrSnow(rainOrSnow);
                     forecastFromVisuall.setPredictionTemperature(hourTemp);
                     forecastFromVisuall.setPredictionHour(predictionHour);
                     forecastFromVisuall.setDataSource(DataSource.VisualCrossing);

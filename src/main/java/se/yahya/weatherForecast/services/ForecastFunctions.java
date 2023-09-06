@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
@@ -132,38 +133,65 @@ public class ForecastFunctions {
 
 
 
-    private void createNewPrediction(Scanner scan) throws IOException, ParseException {
-
+    private void createNewPrediction(Scanner scan) throws IOException {
         System.out.println("Create prediction");
-        System.out.println("Ange datum (i formatet YYYYMMDD):");
+        System.out.println("Enter date (in the format YYYY-MM-DD):");
 
         String tempDay = scan.next();
-
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate day = LocalDate.parse(tempDay,dateFormat);
 
+        try {
+            LocalDate day = LocalDate.parse(tempDay, dateFormat);
 
-        System.out.println("Hour");
-        int hour = scan.nextInt();
-        System.out.println("Temp");
-        float temp = scan.nextFloat();
+            int hour;
+            while (true) {
+                System.out.println("Hour");
+                if (scan.hasNextInt()) {
+                    hour = scan.nextInt();
+                    break;
+                } else {
+                    System.err.println("Invalid input for hour. Please enter an integer.");
+                    scan.next();
+                }
+            }
 
-        Boolean rainOrSnow = false;
-        System.out.println("Rain or snow?");
-        if (scan.next().equals("rain") || scan.next().equals("snow")){
-            rainOrSnow = true;
+            float temp;
+            while (true) {
+                System.out.println("Temperature");
+                if (scan.hasNextFloat()) {
+                    temp = scan.nextFloat();
+                    break;
+                } else {
+                    System.err.println("Invalid input for temperature. Please enter a valid floating-point number.");
+                    scan.next();
+                }
+            }
+
+            Boolean rainOrSnow = false;
+            while (true) {
+                System.out.println("Rain or snow?");
+                String input = scan.next().toLowerCase();
+                if (input.equals("rain") || input.equals("snow")) {
+                    rainOrSnow = true;
+                    break;
+                } else {
+                    System.err.println("Invalid input for rain/snow. Please enter 'rain' or 'snow'.");
+                }
+            }
+
+            var forecast = new Forecast();
+            forecast.setId(UUID.randomUUID());
+            forecast.setPredictionDate(day);
+            forecast.setRainOrSnow(rainOrSnow);
+            forecast.setPredictionHour(hour);
+            forecast.setPredictionTemperature(temp);
+            forecast.setDataSource(DataSource.Console);
+            forecastService.add(forecast);
+        } catch (DateTimeParseException e) {
+            System.err.println("Invalid date format. Please enter the date in the format YYYY-MM-DD.");
         }
-
-
-        var forecast = new Forecast();
-        forecast.setId(UUID.randomUUID());
-        forecast.setCreated(day);
-        forecast.setRainOrSnow(rainOrSnow);
-        forecast.setPredictionHour(hour);
-        forecast.setPredictionTemperature(temp);
-        forecast.setDataSource(DataSource.Console);
-        forecastService.add(forecast);
     }
+
 
 
 
@@ -178,7 +206,6 @@ public class ForecastFunctions {
         System.out.println("Enter the ID of the prediction you want to update:");
         UUID idToUpdate = UUID.fromString(scan.next());
 
-        // Find the forecast to update
         Forecast existingForecast = forecastService.getForecasts().stream()
                 .filter(forecast -> forecast.getId().equals(idToUpdate))
                 .findFirst()
@@ -189,7 +216,9 @@ public class ForecastFunctions {
             float newTemperature = scan.nextFloat();
 
             existingForecast.setPredictionTemperature(newTemperature);
-            forecastService.update(existingForecast);
+            forecastRepository.save(existingForecast);
+
+          //  forecastService.update(existingForecast);
 
             System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
         } else {
