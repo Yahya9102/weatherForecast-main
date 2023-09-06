@@ -51,7 +51,6 @@ public class VisualCrossingApiSetup {
                     String hourDatetime = hourlyData.getDatetime();
                     String[] timeParts = hourDatetime.split(":");
                     int predictionHour = Integer.parseInt(timeParts[0]);
-
                     float hourTemp = hourlyData.getTemp();
                     int precip = hourlyData.getPrecip();
 
