@@ -13,8 +13,11 @@ import se.yahya.weatherForecast.repositories.ForecastRepository;
 import se.yahya.weatherForecast.services.ForecastService;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,8 +33,9 @@ public class ForecastController {
 
     @GetMapping("/api/forecasts/averageTemp/{date}")
     public ResponseEntity<List<Object[]>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+
         List<Object[]> averageTempData = forecastRepository.findAverageTempPerHour(date);
-        return new ResponseEntity<>(averageTempData, HttpStatus.OK);
+                  return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
 
 
@@ -67,8 +71,8 @@ public class ForecastController {
 
         //Mappar från DTO till -> entitet
 
-
         var forecast = new Forecast();
+
         forecast.setId(id);
         forecast.setUpdated(newForecastDTO.getDatum());
         forecast.setPredictionDate(newForecastDTO.getDatum());
