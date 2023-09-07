@@ -65,19 +65,15 @@ public class ForecastController {
 
 
     @PutMapping("/api/forecasts/{id}")
-    public ResponseEntity<Forecast> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO ) throws IOException {
-        //Mappar från DTO till -> entitet
+    public ResponseEntity<NewForecastDTO> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO ) throws IOException {
        var forecast = new Forecast();
         forecast.setId(id);
         forecast.setUpdated(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
 
-
-
-       */
         forecastService.update(forecast);
-      return ResponseEntity.ok(forecast);
+      return ResponseEntity.ok(newForecastDTO);
 
     }
 

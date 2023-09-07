@@ -29,16 +29,7 @@ public class ForecastService {
 
 
     public void update(Forecast forecastFromUser)  {
-        Forecast forecast = new Forecast();
-        forecastFromUser.setId(forecast.getId());
-        forecastFromUser.setPredictionTemperature(forecast.getPredictionTemperature());
-        forecastFromUser.setPredictionHour(forecast.getPredictionHour());
-        forecastFromUser.setPredictionDate(forecast.getPredictionDate());
-
-
         forecastRepository.save(forecastFromUser);
-
-
     }
 
     public Optional<Forecast> get(UUID id) {
