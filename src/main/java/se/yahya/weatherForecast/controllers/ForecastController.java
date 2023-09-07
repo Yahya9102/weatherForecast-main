@@ -33,7 +33,6 @@ public class ForecastController {
 
     @GetMapping("/api/forecasts/averageTemp/{date}")
     public ResponseEntity<List<Object[]>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
-
         List<Object[]> averageTempData = forecastRepository.findAverageTempPerHour(date);
                   return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
@@ -66,20 +65,18 @@ public class ForecastController {
 
 
     @PutMapping("/api/forecasts/{id}")
-    public ResponseEntity<Forecast> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO) throws IOException {
-
-
+    public ResponseEntity<Forecast> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO ) throws IOException {
         //Mappar från DTO till -> entitet
-
-        var forecast = new Forecast();
-
+       var forecast = new Forecast();
         forecast.setId(id);
         forecast.setUpdated(newForecastDTO.getDatum());
-        forecast.setPredictionDate(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
-        forecastService.update(forecast);
 
+
+
+       */
+        forecastService.update(forecast);
       return ResponseEntity.ok(forecast);
 
     }

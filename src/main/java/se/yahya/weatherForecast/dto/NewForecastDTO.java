@@ -12,7 +12,6 @@ public class NewForecastDTO {
     private float Temperatur;
 
 
-
     public LocalDate getDatum() {
         return Datum;
     }

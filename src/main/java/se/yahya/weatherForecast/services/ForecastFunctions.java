@@ -187,6 +187,7 @@ public class ForecastFunctions {
         System.out.println("Enter the ID of the prediction you want to update:");
         UUID idToUpdate = UUID.fromString(scan.next());
 
+
         Forecast existingForecast = forecastService.getForecasts().stream()
                 .filter(forecast -> forecast.getId().equals(idToUpdate))
                 .findFirst()

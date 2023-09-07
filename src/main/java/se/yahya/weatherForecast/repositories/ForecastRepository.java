@@ -18,7 +18,7 @@ public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
 
     @Query("SELECT f.predictionDate, f.predictionHour,f.rainOrSnow, ROUND(AVG(f.predictionTemperature),1)" +
             "FROM Forecast f " +
-            "GROUP BY f.predictionDate, f.predictionHour " +
+            "GROUP BY f.predictionDate, f.predictionHour " + //Add f.dataSource here
             "ORDER BY " +
             "CASE " +
             "  WHEN f.predictionDate = CURRENT_DATE AND f.predictionHour = HOUR(CURRENT_TIME) THEN 0 " +
@@ -27,6 +27,8 @@ public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
             "f.predictionDate ASC, " +
             "f.predictionHour ASC")
     List<Object[]> findAverageTempPerHour(LocalDate date);
+
+
 
 
 }

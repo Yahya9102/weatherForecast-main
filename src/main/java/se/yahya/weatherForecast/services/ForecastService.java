@@ -28,13 +28,16 @@ public class ForecastService {
 
 
 
-    public void update(Forecast forecastFromUser) throws IOException {
-        //
-        var foreCastInList = get(forecastFromUser.getId()).get();
-        foreCastInList.setPredictionTemperature(forecastFromUser.getPredictionTemperature());
-        foreCastInList.setCreated(forecastFromUser.getCreated());
-        foreCastInList.setPredictionHour(forecastFromUser.getPredictionHour());
+    public void update(Forecast forecastFromUser)  {
+        Forecast forecast = new Forecast();
+        forecastFromUser.setId(forecast.getId());
+        forecastFromUser.setPredictionTemperature(forecast.getPredictionTemperature());
+        forecastFromUser.setPredictionHour(forecast.getPredictionHour());
+        forecastFromUser.setPredictionDate(forecast.getPredictionDate());
+
+
         forecastRepository.save(forecastFromUser);
+
 
     }
 
