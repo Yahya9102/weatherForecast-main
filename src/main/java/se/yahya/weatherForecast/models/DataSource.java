@@ -4,5 +4,6 @@ public enum DataSource {
     None,
     Smhi,
     VisualCrossing,
-    Console
+    Console,
+    Postman
 }

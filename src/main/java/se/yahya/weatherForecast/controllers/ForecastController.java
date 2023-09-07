@@ -31,10 +31,8 @@ public class ForecastController {
     @GetMapping("/api/forecasts/averageTemp/{date}")
     public ResponseEntity<List<Object[]>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
         List<Object[]> averageTempData = forecastRepository.findAverageTempPerHour(date);
-
         return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
-
 
 
     @GetMapping("/api/forecasts")
@@ -49,6 +47,8 @@ public class ForecastController {
             forecastListDTD.dataSource = forecast.getDataSource();
             return forecastListDTD;}).collect(Collectors.toList()),
             HttpStatus.OK);
+
+
     }
 
 
@@ -70,6 +70,7 @@ public class ForecastController {
 
         var forecast = new Forecast();
         forecast.setId(id);
+        forecast.setUpdated(newForecastDTO.getDatum());
         forecast.setPredictionDate(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
@@ -84,7 +85,6 @@ public class ForecastController {
         forecastService.add(forecast);
         return ResponseEntity.ok(forecast);
     }
-
 
 
     @DeleteMapping("/api/forecasts/{id}")

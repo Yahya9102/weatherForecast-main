@@ -26,7 +26,6 @@ public class VisualCrossingApiSetup {
 
     @Autowired
     ForecastRepository forecastRepository;
-    //&days=2&aqi=no&alerts=no
     public void gettingAPI() throws IOException, ParseException {
 
         var objectmapper = new ObjectMapper();

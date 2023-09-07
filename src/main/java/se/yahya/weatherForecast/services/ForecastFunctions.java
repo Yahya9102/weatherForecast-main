@@ -76,25 +76,6 @@ public class ForecastFunctions {
 
 
     }
-/*
-    private void updatePrediction(Scanner scan) {
-        allPredictions(scan);
-        System.out.println("Ange id");
-        UUID Uid = UUID.fromString(scan.next());
-        int id = Integer.parseInt(Uid.toString());
-
-        var forecast = forecastService.getByIndex(id);
-        System.out.println("Date" + forecast.getDate() + "\n hour"  + forecast.getHour() + "\ntemp" + forecast.getTemperature());
-        System.out.println("ange ny temp");
-        float newTemp = scan.nextFloat();
-        forecast.setTemperature(newTemp);
-        forecastService.update(Uid, forecast);
-
-
-    }
-
-
- */
 
     private void showHeaderMenu() {
         System.out.println("1. List all");
