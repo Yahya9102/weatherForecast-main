@@ -2,12 +2,15 @@ package se.yahya.weatherForecast.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.yahya.weatherForecast.dto.ForecastAverageDTO;
+import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.repositories.ForecastRepository;
 
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -27,6 +30,10 @@ public class ForecastService {
 
 
 
+    public List<Object> getAverageTemperaturePerHour(LocalDate date) {
+        return forecastRepository.findAverageTempPerHour(date);
+    }
+
 
     public void update(Forecast forecastFromUser)  {
         forecastRepository.save(forecastFromUser);
@@ -38,12 +45,15 @@ public class ForecastService {
     }
 
 
-    public void delete(UUID id) throws IOException {
+    public void delete(UUID id)  {
         forecastRepository.deleteById(id);
 
     }
 
 
+    public List<Object> getAverageTempPerHourByProvider(LocalDate date, DataSource provider) {
+        return forecastRepository.findAverageTempPerHourByProvider(date, provider);
+    }
 
     }
 

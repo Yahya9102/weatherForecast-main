@@ -37,9 +37,9 @@ public class WeatherForecastApplication implements CommandLineRunner {
 
 		/*TODO TOMORROW
 
-		*FIND OUT WHY DAte is NULL WHEN CREATED FROM CONSOLE
+		*FIND OUT WHY DAte is NULL WHEN CREATED FROM CONSOLE (DONE)
 		*ADD error handling for the inserts and everything else
-		*ADD rain or snow to VISUAL CROSSING API
+		*ADD rain or snow to VISUAL CROSSING API(DONE)
 		* */
 
 

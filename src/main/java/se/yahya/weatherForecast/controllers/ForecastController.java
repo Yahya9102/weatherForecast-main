@@ -1,13 +1,18 @@
 package se.yahya.weatherForecast.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import se.yahya.weatherForecast.dto.ForecastAverageDTO;
 import se.yahya.weatherForecast.dto.ForecastListDTO;
 import se.yahya.weatherForecast.dto.NewForecastDTO;
+import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
 import se.yahya.weatherForecast.repositories.ForecastRepository;
 import se.yahya.weatherForecast.services.ForecastService;
@@ -15,11 +20,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
-import java.util.Locale;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,14 +29,24 @@ public class ForecastController {
     @Autowired
     ForecastService forecastService;
 
-    @Autowired
-    ForecastRepository forecastRepository;
-
 
     @GetMapping("/api/forecasts/averageTemp/{date}")
-    public ResponseEntity<List<Object[]>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
-        List<Object[]> averageTempData = forecastRepository.findAverageTempPerHour(date);
-                  return new ResponseEntity<>(averageTempData, HttpStatus.OK);
+    public ResponseEntity<List<Object>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+        List<Object> averageTempData = forecastService.getAverageTemperaturePerHour(date);
+        return new ResponseEntity<>(averageTempData, HttpStatus.OK);
+    }
+
+
+
+
+    @GetMapping("/api/forecasts/averageTempByProvider/{date}/{provider}")
+    public ResponseEntity<List<Object>> getAverageTemperaturePerHourByProvider(
+            @PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date,
+            @PathVariable("provider") DataSource provider)  {
+
+        List<Object> averageTempData = forecastService.getAverageTempPerHourByProvider(date, provider);
+
+        return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
 
 
@@ -51,7 +63,6 @@ public class ForecastController {
             return forecastListDTD;}).collect(Collectors.toList()),
             HttpStatus.OK);
 
-
     }
 
 
@@ -64,11 +75,16 @@ public class ForecastController {
 
 
 
+
+
+
+
+
     @PutMapping("/api/forecasts/{id}")
-    public ResponseEntity<NewForecastDTO> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO ) throws IOException {
+    public ResponseEntity<NewForecastDTO> update(@PathVariable UUID id, @RequestBody NewForecastDTO newForecastDTO )  {
        var forecast = new Forecast();
         forecast.setId(id);
-        forecast.setUpdated(newForecastDTO.getDatum());
+        forecast.setPredictionDate(newForecastDTO.getDatum());
         forecast.setPredictionHour(newForecastDTO.getHour());
         forecast.setPredictionTemperature(newForecastDTO.getTemperatur());
 
@@ -78,7 +94,7 @@ public class ForecastController {
     }
 
     @PostMapping("/api/forecasts")
-    public ResponseEntity<Forecast> create(@RequestBody Forecast forecast) throws IOException {
+    public ResponseEntity<Forecast> create(@RequestBody Forecast forecast)  {
         forecastService.add(forecast);
         return ResponseEntity.ok(forecast);
     }
@@ -86,6 +102,7 @@ public class ForecastController {
 
     @DeleteMapping("/api/forecasts/{id}")
     public  ResponseEntity delete(@PathVariable UUID id) throws IOException {
+
         forecastService.delete(id);
        return ResponseEntity.ok("delete");
     }

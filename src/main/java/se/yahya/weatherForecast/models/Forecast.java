@@ -20,6 +20,8 @@ public class Forecast {
 
 
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
