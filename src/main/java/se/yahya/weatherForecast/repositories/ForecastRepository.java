@@ -10,8 +10,7 @@ import se.yahya.weatherForecast.models.DataSource;
 import se.yahya.weatherForecast.models.Forecast;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
@@ -45,7 +44,7 @@ public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
             " END, " +
             " f.predictionDate ASC, " +
             " f.predictionHour ASC")
-    List<Object> findAverageTempPerHourByProvider(@Param("date") LocalDate date, @Param("provider") DataSource provider);
+    List<Map> findAverageTempPerHourByProvider(@Param("date") LocalDate date, @Param("provider") DataSource provider);
 
 
 }

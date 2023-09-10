@@ -30,11 +30,39 @@ public class ForecastService {
 
 
 
+
+    public List<Map<String, Object>> getAverageTemperaturePerHour(LocalDate date) {
+        List<Object> averageTempData = forecastRepository.findAverageTempPerHour(date);
+
+        // Create a new list to store the transformed data
+        List<Map<String, Object>> transformedData = new ArrayList<>();
+
+        // Iterate through the list of objects and build the map structure
+        for (Object obj : averageTempData) {
+            Object[] objArray = (Object[]) obj;
+
+            Map<String, Object> dataMap = new LinkedHashMap<>();
+            dataMap.put("Date", objArray[0]);
+            dataMap.put("Hour", objArray[1]);
+            dataMap.put("rainOrSnow", objArray[2]);
+            dataMap.put("Temp", objArray[3]);
+
+            transformedData.add(dataMap);
+        }
+
+        return transformedData;
+    }
+
+
+
+/*
     public List<Object> getAverageTemperaturePerHour(LocalDate date) {
         return forecastRepository.findAverageTempPerHour(date);
     }
 
 
+
+ */
     public void update(Forecast forecastFromUser)  {
         forecastRepository.save(forecastFromUser);
     }
@@ -51,7 +79,7 @@ public class ForecastService {
     }
 
 
-    public List<Object> getAverageTempPerHourByProvider(LocalDate date, DataSource provider) {
+    public List<Map> getAverageTempPerHourByProvider(LocalDate date, DataSource provider) {
         return forecastRepository.findAverageTempPerHourByProvider(date, provider);
     }
 

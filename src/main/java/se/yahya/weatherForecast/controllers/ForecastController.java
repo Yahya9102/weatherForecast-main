@@ -33,11 +33,16 @@ public class ForecastController {
 
 
 
+    @GetMapping("/api/forecasts/averageTemp/{date}")
+    public ResponseEntity<List<Map<String, Object>>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+        List<Map<String, Object>> averageTempData = forecastService.getAverageTemperaturePerHour(date);
+        return new ResponseEntity<>(averageTempData, HttpStatus.OK);
+    }
 
 
+/*
 
     @GetMapping("/api/forecasts/averageTemp/{date}")
-
     public ResponseEntity<List<Object>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
         List<Object> averageTempData = forecastService.getAverageTemperaturePerHour(date);
         return new ResponseEntity<>(averageTempData, HttpStatus.OK);
@@ -45,15 +50,15 @@ public class ForecastController {
 
 
 
+ */
 
 
 
     @GetMapping("/api/forecasts/averageTempByProvider/{date}/{provider}")
-    public ResponseEntity<List<Object>> getAverageTemperaturePerHourByProvider(
+    public ResponseEntity<List<Map>> getAverageTemperaturePerHourByProvider(
             @PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date,
             @PathVariable("provider") DataSource provider)  {
-
-        List<Object> averageTempData = forecastService.getAverageTempPerHourByProvider(date, provider);
+        List<Map> averageTempData = forecastService.getAverageTempPerHourByProvider(date, provider);
 
         return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
