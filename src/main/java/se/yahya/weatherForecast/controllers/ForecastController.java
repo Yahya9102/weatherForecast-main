@@ -30,11 +30,20 @@ public class ForecastController {
     ForecastService forecastService;
 
 
+
+
+
+
+
+
     @GetMapping("/api/forecasts/averageTemp/{date}")
+
     public ResponseEntity<List<Object>> getAverageTemperaturePerHour(@PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
         List<Object> averageTempData = forecastService.getAverageTemperaturePerHour(date);
         return new ResponseEntity<>(averageTempData, HttpStatus.OK);
     }
+
+
 
 
 

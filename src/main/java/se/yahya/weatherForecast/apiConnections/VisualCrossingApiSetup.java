@@ -33,6 +33,7 @@ public class VisualCrossingApiSetup {
         VisualCrossingAPIProps visualCrossingAPIProps = objectmapper.readValue(url, VisualCrossingAPIProps.class);
 
 
+
         List<VisuallCrossingDayData> timelist = visualCrossingAPIProps.getDays();
         long currentTimestamp = System.currentTimeMillis() / 1000;
 
@@ -48,6 +49,9 @@ public class VisualCrossingApiSetup {
                 if (hourDatetimeEpoch >= currentTimestamp && hourDatetimeEpoch <= currentTimestamp + 25 * 3600) {
 
                     String hourDatetime = hourlyData.getDatetime();
+
+
+
                     String[] timeParts = hourDatetime.split(":");
 
                     int predictionHour = Integer.parseInt(timeParts[0]);

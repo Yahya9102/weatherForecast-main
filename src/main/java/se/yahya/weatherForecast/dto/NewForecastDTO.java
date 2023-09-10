@@ -1,5 +1,7 @@
 package se.yahya.weatherForecast.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
@@ -7,8 +9,11 @@ import java.util.Date;
 public class NewForecastDTO {
 
 //DTO = DATA TRANSFER OBJECT
-    private LocalDate Datum;
+
+private LocalDate Datum;
+
     private int Hour;
+
     private float Temperatur;
 
 
