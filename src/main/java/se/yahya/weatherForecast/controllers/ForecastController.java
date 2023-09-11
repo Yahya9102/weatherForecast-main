@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.yahya.weatherForecast.dto.CreateForecastDTO;
+import se.yahya.weatherForecast.dto.ForecastAverageDTO;
 import se.yahya.weatherForecast.dto.ForecastListDTO;
 import se.yahya.weatherForecast.dto.NewForecastDTO;
 import se.yahya.weatherForecast.models.DataSource;
@@ -43,8 +44,8 @@ public class ForecastController {
     public ResponseEntity<?> getAverageTemperaturePerHourByProvider(
             @PathVariable("date") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate date,
             @PathVariable("provider") DataSource provider) {
-        try {
 
+        try {
             List<Map> averageTempData = forecastService.getAverageTempPerHourByProvider(date, provider);
 
             if (averageTempData.isEmpty()) {

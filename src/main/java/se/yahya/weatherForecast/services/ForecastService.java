@@ -50,11 +50,6 @@ public class ForecastService {
 
 
 
-/*
-    public List<Object> getAverageTemperaturePerHour(LocalDate date) {
-        return forecastRepository.findAverageTempPerHour(date);
-    }
- */
 
     public void update(Forecast forecastFromUser)  {
         forecastRepository.save(forecastFromUser);

@@ -23,13 +23,13 @@ public class VisualCrossingApiSetup {
 
 
     private float latitude = 59.334591F;
-    private float longtitude = 18.063240F;
+    private float longitude = 18.063240F;
 
-    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/59.334591%2C%2018.063240/next24hours?unitGroup=metric&include=hours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
+    private  String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + latitude + "%2C%20" + longitude + "/next24hours?unitGroup=metric&include=hours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
 
     @Autowired
     ForecastRepository forecastRepository;
-    public void gettingAPI() throws IOException, ParseException {
+    public void gettingAPI() throws IOException {
 LocalDate createdDate = LocalDate.now();
         var objectmapper = new ObjectMapper();
         var url = new URL(API_URL);
@@ -40,8 +40,6 @@ LocalDate createdDate = LocalDate.now();
         List<VisuallCrossingDayData> timelist = visualCrossingAPIProps.getDays();
         long currentTimestamp = System.currentTimeMillis() / 1000;
 
-        var localDateTime = LocalDateTime.now();
-        var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate theDate = LocalDateTime.now().toLocalDate();
 
         for (VisuallCrossingDayData hourDate : timelist) {
@@ -74,19 +72,14 @@ LocalDate createdDate = LocalDate.now();
                     forecastFromVisuall.setRainOrSnow(rainOrSnow);
                     forecastFromVisuall.setCreated(createdDate);
                     forecastFromVisuall.setLatitude(latitude);
-                    forecastFromVisuall.setLongitude(longtitude);
+                    forecastFromVisuall.setLongitude(longitude);
                     forecastFromVisuall.setPredictionTemperature(hourTemp);
                     forecastFromVisuall.setPredictionHour(predictionHour);
                     forecastFromVisuall.setDataSource(DataSource.VisualCrossing);
                     forecastFromVisuall.setPredictionDate(theDate);
+                    forecastRepository.save(forecastFromVisuall);
 
-                        forecastRepository.save(forecastFromVisuall);
 
-
-                        System.out.println("*******************************");
-                        System.out.println("The date is : " + theDate);
-                        System.out.println("The hour is: " + hourDatetime);
-                        System.out.println("Visual temp is: " + hourTemp);
 
                 }
 

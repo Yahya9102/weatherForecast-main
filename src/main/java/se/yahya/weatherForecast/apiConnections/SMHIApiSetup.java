@@ -25,12 +25,11 @@ public class SMHIApiSetup {
     @Autowired
     ForecastRepository forecastRepository;
 
-    private float longtitude = 59.3099F;
-    private float latitude = 18.0215F;
+    private float longitude = 18.0215F;
+    private float latitude = 59.3099F;
 
-
-    private String url_Link = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.0215/lat/59.3099/data.json";
-
+    private String baseUrl = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/";
+    private String url_Link = baseUrl + longitude + "/lat/" + latitude + "/data.json";
 
     public void gettingSMHIData() throws IOException {
 
@@ -101,7 +100,7 @@ public class SMHIApiSetup {
                                 forecastFromSmhi.setPredictionHour(hour);
                                 forecastFromSmhi.setCreated(createdDate);
                                 forecastFromSmhi.setLatitude(latitude);
-                                forecastFromSmhi.setLongitude(longtitude);
+                                forecastFromSmhi.setLongitude(longitude);
 
                                 forecastFromSmhi.setDataSource(DataSource.Smhi);
                                 forecastRepository.save(forecastFromSmhi);
