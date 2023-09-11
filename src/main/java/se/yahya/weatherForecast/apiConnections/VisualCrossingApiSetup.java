@@ -22,12 +22,15 @@ import java.util.*;
 public class VisualCrossingApiSetup {
 
 
-    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Stockholm/next24hours?unitGroup=metric&include=hours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
+    private float latitude = 59.334591F;
+    private float longtitude = 18.063240F;
+
+    private static String API_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/59.334591%2C%2018.063240/next24hours?unitGroup=metric&include=hours&key=CBMMVHXH6GZ7LNK2C8Z9343E6&contentType=json";
 
     @Autowired
     ForecastRepository forecastRepository;
     public void gettingAPI() throws IOException, ParseException {
-
+LocalDate createdDate = LocalDate.now();
         var objectmapper = new ObjectMapper();
         var url = new URL(API_URL);
         VisualCrossingAPIProps visualCrossingAPIProps = objectmapper.readValue(url, VisualCrossingAPIProps.class);
@@ -69,6 +72,9 @@ public class VisualCrossingApiSetup {
                     }
                     var forecastFromVisuall = new Forecast();
                     forecastFromVisuall.setRainOrSnow(rainOrSnow);
+                    forecastFromVisuall.setCreated(createdDate);
+                    forecastFromVisuall.setLatitude(latitude);
+                    forecastFromVisuall.setLongitude(longtitude);
                     forecastFromVisuall.setPredictionTemperature(hourTemp);
                     forecastFromVisuall.setPredictionHour(predictionHour);
                     forecastFromVisuall.setDataSource(DataSource.VisualCrossing);

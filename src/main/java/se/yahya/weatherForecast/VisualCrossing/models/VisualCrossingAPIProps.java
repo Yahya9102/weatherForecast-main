@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class VisualCrossingAPIProps {
     public int queryCost;
-    public double latitude;
-    public double longitude;
+    public Float latitude;
+    public Float longitude;
     public String resolvedAddress;
     public String address;
     public String timezone;
@@ -31,7 +31,7 @@ public class VisualCrossingAPIProps {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
@@ -39,7 +39,7 @@ public class VisualCrossingAPIProps {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 

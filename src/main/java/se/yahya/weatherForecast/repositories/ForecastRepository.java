@@ -17,33 +17,30 @@ public interface ForecastRepository extends CrudRepository<Forecast, UUID> {
     @Override
     List<Forecast> findAll();
 
-
     @Query("SELECT f.predictionDate, f.predictionHour,f.rainOrSnow, ROUND(AVG(f.predictionTemperature),1)" +
             "FROM Forecast f " +
             "GROUP BY f.predictionDate, f.predictionHour " +
+            "HAVING f.predictionDate = ?1 " +
             "ORDER BY " +
-            "CASE " +
-            "  WHEN f.predictionDate = CURRENT_DATE AND f.predictionHour = HOUR(CURRENT_TIME) THEN 0 " +
-            "  ELSE 1 " +
-            "END, " +
             "f.predictionDate ASC, " +
             "f.predictionHour ASC")
     List<Object> findAverageTempPerHour(LocalDate date);
 
 
+    @Query("SELECT\n" +
+            "    f.predictionDate AS Date, f.predictionHour AS Hour, f.rainOrSnow AS rainOrSnow,\n" +
+            "    ROUND(AVG(IFNULL(f.predictionTemperature, 0.0)), 1) AS Temp\n" +
+            "FROM Forecast f\n" +
+            "WHERE\n" +
+            "    f.dataSource = :provider\n" +
+            "    AND f.predictionDate = :date\n" +
+            "GROUP BY\n" +
+            "    f.predictionDate, f.predictionHour, f.rainOrSnow\n" +
+            "HAVING f.predictionDate = :date AND f.dataSource = :provider\n" +
+            "ORDER BY\n" +
+            "    f.predictionDate ASC,\n" +
+            "    f.predictionHour ASC")
 
-    @Query("SELECT f.predictionDate AS Date, f.predictionHour AS Hour, f.rainOrSnow AS rainOrSnow, ROUND(AVG(f.predictionTemperature), 1) AS Temp" +
-            " FROM Forecast f " +
-            " WHERE f.dataSource = :provider " +
-            " AND f.predictionDate = :date " +
-            " GROUP BY f.predictionDate, f.predictionHour, f.rainOrSnow " +
-            " ORDER BY " +
-            " CASE " +
-            "   WHEN f.predictionDate = CURRENT_DATE AND f.predictionHour = HOUR(CURRENT_TIME) THEN 0 " +
-            "   ELSE 1 " +
-            " END, " +
-            " f.predictionDate ASC, " +
-            " f.predictionHour ASC")
     List<Map> findAverageTempPerHourByProvider(@Param("date") LocalDate date, @Param("provider") DataSource provider);
 
 

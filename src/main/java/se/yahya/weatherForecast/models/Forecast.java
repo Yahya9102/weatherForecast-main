@@ -1,16 +1,12 @@
 package se.yahya.weatherForecast.models;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 
-import java.time.Instant;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -28,13 +24,35 @@ public class Forecast {
     private LocalDate created;
 
     private LocalDate updated;
-    private float longitude;
-    private float latitude;
+
+
+
+    private Float longitude;
+    private Float latitude;
+
+
     private LocalDate predictionDate;
     private int predictionHour;
     private float predictionTemperature;
     private boolean rainOrSnow;
     private DataSource dataSource;
+
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
 
     public UUID getId() {
         return id;
@@ -60,21 +78,8 @@ public class Forecast {
         this.updated = updated;
     }
 
-    public float getLongitude() {
-        return longitude;
-    }
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
 
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
 
     public LocalDate getPredictionDate() {
         return predictionDate;

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SMHIProps{
     public ArrayList<SMHITimeSeriesData> timeSeries;
 
+
     public ArrayList<SMHITimeSeriesData> getTimeSeries() {
         return timeSeries;
     }

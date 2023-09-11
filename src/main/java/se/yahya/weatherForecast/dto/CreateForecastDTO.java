@@ -1,21 +1,18 @@
 package se.yahya.weatherForecast.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import se.yahya.weatherForecast.models.DataSource;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 
-public class NewForecastDTO {
+public class CreateForecastDTO {
 
-//DTO = DATA TRANSFER OBJECT
-
-private LocalDate datum;
+    private LocalDate datum;
 
     private int hour;
 
     private float temperatur;
 
+    DataSource dataSource;
 
     public LocalDate getDatum() {
         return datum;
@@ -39,5 +36,13 @@ private LocalDate datum;
 
     public void setTemperatur(float temperatur) {
         this.temperatur = temperatur;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

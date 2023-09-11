@@ -13,7 +13,6 @@ import se.yahya.weatherForecast.repositories.ForecastRepository;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -58,9 +57,8 @@ public class ForecastFunctions {
                  deletePrediction(scan);
             } else if (choices == 4) {
                  updatePredictions(scan);
-
-
-            } else if (choices == 5) {
+            }
+            else if (choices == 5) {
                 callingAllApi();
             }else if(choices == 6){
                 forecastRepository.deleteAll();
@@ -117,6 +115,7 @@ public class ForecastFunctions {
     private void createNewPrediction(Scanner scan) throws IOException {
         System.out.println("Create prediction");
         System.out.println("Enter date (in the format YYYY-MM-DD):");
+        LocalDate updated = LocalDate.now();
 
         String tempDay = scan.next();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -163,6 +162,7 @@ public class ForecastFunctions {
             var forecast = new Forecast();
             forecast.setId(UUID.randomUUID());
             forecast.setPredictionDate(day);
+            forecast.setCreated(updated);
             forecast.setRainOrSnow(rainOrSnow);
             forecast.setPredictionHour(hour);
             forecast.setPredictionTemperature(temp);
@@ -182,36 +182,44 @@ public class ForecastFunctions {
     }
 
 
-    private void updatePredictions(Scanner scan) throws IOException {
-        System.out.println("Update prediction");
-        System.out.println("Enter the ID of the prediction you want to update:");
-        UUID idToUpdate = UUID.fromString(scan.next());
+    private void updatePredictions(Scanner scan) {
+        LocalDate updated = LocalDate.now();
+        try {
+            System.out.println("Update prediction");
+            System.out.println("Enter the ID of the prediction you want to update:");
+            UUID idToUpdate = UUID.fromString(scan.next());
 
+            Forecast existingForecast = forecastService.getForecasts().stream()
+                    .filter(forecast -> forecast.getId().equals(idToUpdate))
+                    .findFirst()
+                    .orElse(null);
 
-        Forecast existingForecast = forecastService.getForecasts().stream()
-                .filter(forecast -> forecast.getId().equals(idToUpdate))
-                .findFirst()
-                .orElse(null);
+            if (existingForecast != null) {
+                System.out.println("Enter new temperature:");
+                float newTemperature = scan.nextFloat();
+                existingForecast.setPredictionTemperature(newTemperature);
+                existingForecast.setUpdated(updated);
+                forecastRepository.save(existingForecast);
 
-        if (existingForecast != null) {
-            System.out.println("Enter new temperature:");
-            float newTemperature = scan.nextFloat();
-
-            existingForecast.setPredictionTemperature(newTemperature);
-            forecastRepository.save(existingForecast);
-
-          //  forecastService.update(existingForecast);
-
-            System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
-        } else {
-            System.out.println("No prediction found with the given ID.");
+                System.out.println("Prediction with ID " + idToUpdate + " has been updated.");
+            } else {
+                System.out.println("No prediction found with the given ID.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid temperature.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid UUID format. Please enter a valid UUID.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
         }
     }
+
 
     private void deletePrediction(Scanner scan) throws IOException {
         System.out.println("Delete prediction");
         System.out.println("Enter the ID of the prediction you want to delete:");
         UUID idToDelete = UUID.fromString(scan.next());
+
         System.out.println(idToDelete);
         forecastService.delete(idToDelete);
         System.out.println("Prediction with ID " + idToDelete + " has been deleted.");

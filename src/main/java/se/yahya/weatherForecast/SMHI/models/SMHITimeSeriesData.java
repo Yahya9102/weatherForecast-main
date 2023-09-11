@@ -10,6 +10,8 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SMHITimeSeriesData{
     public Date validTime;
+
+
     public ArrayList<SMHIParameter> parameters;
 
     public Date getValidTime() {
