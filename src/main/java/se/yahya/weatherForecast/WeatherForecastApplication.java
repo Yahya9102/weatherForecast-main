@@ -18,13 +18,6 @@ public class WeatherForecastApplication implements CommandLineRunner {
 		SpringApplication.run(WeatherForecastApplication.class, args);
 	}
 
-	@Autowired
-	SMHIApiSetup smhiApiSetup;
-
-
-
-	@Autowired
-	VisualCrossingApiSetup visualCroppsingApiSetup;
 
 	@Autowired
 	ForecastFunctions forecastFunctions;

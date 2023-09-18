@@ -35,45 +35,42 @@ public class ForecastFunctions {
 
 
     public void menu() throws IOException, ParseException {
-
-
         var scan = new Scanner(System.in);
 
         while (true) {
             showHeaderMenu();
 
             System.out.println("Pick an option");
-            int choices = scan.nextInt();
 
-            if (choices == 1) {
-                System.out.println("1");
+            if (scan.hasNextInt()) {
+                int choices = scan.nextInt();
 
-                allPredictions();
-            } else if (choices == 2) {
-                System.out.println("2");
-
-                createNewPrediction(scan);
-            } else if (choices == 3) {
-                 deletePrediction(scan);
-            } else if (choices == 4) {
-                 updatePredictions(scan);
-            }
-            else if (choices == 5) {
-                callingAllApi();
-            }else if(choices == 6){
-                forecastRepository.deleteAll();
-            }
-            else if (choices == 9) {
-                System.out.println("4");
-                scan.close();
-                return;
+                if (choices == 1) {
+                    System.out.println("1");
+                    allPredictions();
+                } else if (choices == 2) {
+                    System.out.println("2");
+                    createNewPrediction(scan);
+                } else if (choices == 3) {
+                    deletePrediction(scan);
+                } else if (choices == 4) {
+                    updatePredictions(scan);
+                } else if (choices == 5) {
+                    callingAllApi();
+                } else if (choices == 6) {
+                    forecastRepository.deleteAll();
+                } else if (choices == 9) {
+                    System.exit(0);
+                } else {
+                    System.out.println("Invalid choice");
+                }
             } else {
-                System.out.println("Invalid choice");
+                System.out.println("Please enter a valid number.");
+                scan.next();
             }
         }
-
-
     }
+
 
     private void showHeaderMenu() {
         System.out.println("1. List all");
